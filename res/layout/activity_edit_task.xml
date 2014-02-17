@@ -4,12 +4,11 @@
     android:layout_height="match_parent" >
 
     <TableRow
-        android:id="@+id/newtaskrow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/title_tv"
+            android:id="@+id/e_title_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/title" />
@@ -20,7 +19,7 @@
         android:layout_height="wrap_content" >
 
         <EditText
-            android:id="@+id/title_et"
+            android:id="@+id/e_title_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -31,12 +30,11 @@
     </TableRow>
 
     <TableRow
-        android:id="@+id/newdescrow"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/desc_tv"
+            android:id="@+id/e_desc_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/description" />
@@ -47,7 +45,7 @@
         android:layout_height="wrap_content" >
 
         <EditText
-            android:id="@+id/desc_et"
+            android:id="@+id/e_desc_et"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -63,7 +61,7 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/rem_tv"
+            android:id="@+id/e_loc_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/location" />
@@ -74,7 +72,7 @@
         android:layout_height="wrap_content" >
 
         <EditText
-            android:id="@+id/loc_et"
+            android:id="@+id/e_loc_et"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -90,7 +88,7 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/bdate_tv"
+            android:id="@+id/e_bdate_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/start_date" />
@@ -101,7 +99,30 @@
         android:layout_height="wrap_content" >
      
         <DatePicker
-                android:id="@+id/begin_datepicker"
+                android:id="@+id/e_begin_datepicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            </DatePicker>
+
+    </TableRow>
+    
+        <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/e_edate_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/end_date" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+     
+        <DatePicker
+                android:id="@+id/e_end_datepicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
             </DatePicker>

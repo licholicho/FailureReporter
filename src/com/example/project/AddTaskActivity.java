@@ -1,6 +1,7 @@
 package com.example.project;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 
@@ -40,6 +41,7 @@ public class AddTaskActivity extends Activity {
 		title = (EditText) findViewById(R.id.title_et);
 		description = (EditText) findViewById(R.id.desc_et);
 		beginDate = (DatePicker) findViewById(R.id.begin_datepicker);
+		turnOffCalendar();
 		gc = new Geocoder(this, Locale.getDefault());
 		
 		if(Geocoder.isPresent()){
@@ -124,4 +126,14 @@ public class AddTaskActivity extends Activity {
 		  return res.toString();	  
 	  }
 	  
+	  private void turnOffCalendar() {
+		  int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+		  if (currentapiVersion >= 11) {
+		    try {
+		      Method m = beginDate.getClass().getMethod("setCalendarViewShown", boolean.class);
+		      m.invoke(beginDate, false);
+		    }
+		    catch (Exception e) {} // eat exception in our case
+		  }
+	  }
 }

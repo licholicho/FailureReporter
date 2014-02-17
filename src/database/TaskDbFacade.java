@@ -36,13 +36,14 @@ public class TaskDbFacade {
         v.put("done", 0);
         v.put("b_date", t.dateToString(t.getBeginDate()));
         v.put("e_date", t.dateToString(t.getEndDate()));
-        if (t.getPhotoInBytes(0) != null)
+        if (!t.getPhotos().isEmpty()) {
+        if (t.getPhotos().size() > 0)
         v.put("photo_1", t.getPhotoInBytes(0));
-        if (t.getPhotoInBytes(1) != null)
+        if (t.getPhotos().size() > 1)
             v.put("photo_2", t.getPhotoInBytes(1));
-        if (t.getPhotoInBytes(2) != null)
+        if (t.getPhotos().size() > 2)
             v.put("photo_3", t.getPhotoInBytes(2));
-
+        }
         long id = db.insert(TaskDbHelper.TABLE_TASKS, null, v);
         if (id >= 0) {
             t.setId(id);
@@ -60,12 +61,14 @@ public class TaskDbFacade {
         v.put("done", 0);
         v.put("b_date", t.dateToString(t.getBeginDate()));
         v.put("e_date", t.dateToString(t.getEndDate()));
-        if (t.getPhotoInBytes(0) != null)
+        if (!t.getPhotos().isEmpty()) {
+        if (t.getPhotos().size() > 0)
         v.put("app_icon", t.getPhotoInBytes(0));
-        if (t.getPhotoInBytes(1) != null)
+        if (t.getPhotos().size() > 1)
             v.put("app_icon", t.getPhotoInBytes(1));
-        if (t.getPhotoInBytes(2) != null)
+        if (t.getPhotos().size() > 2)
             v.put("app_icon", t.getPhotoInBytes(2));
+        }
         
         int rowsAffected = db.update(TaskDbHelper.TABLE_TASKS, v, "_id="
                 + t.getId(), null);

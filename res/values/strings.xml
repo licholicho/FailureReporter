@@ -25,7 +25,8 @@
     <string name="n_delete">No, delete it</string>
     <string name="new_task">New Task</string>
     <string name="remove_all">REMOVE ALL</string>
-    <string name="start_date">Reminder Distance</string>
+    <string name="start_date">Notification Date</string>
+    <string name="end_date">Solution Date</string>
     
 
 </resources>

@@ -1,5 +1,7 @@
 package com.example.project;
 
+import java.lang.reflect.Method;
+
 import task.Task;
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.failurereporter.R;
@@ -18,7 +21,8 @@ public class EditTaskActivity extends Activity {
 
 	private EditText title;
 	private EditText description;
-	private EditText reminderDistance;
+	private DatePicker beginDate;
+	private DatePicker endDate;
 	private long idToUpdate = -1;
 	private TaskDbHelper dbOpenHelper = null;
     private TaskDbFacade dbHelper = null;
@@ -26,19 +30,20 @@ public class EditTaskActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_add_task);
+		setContentView(R.layout.activity_edit_task);
 		setupDbEnv();
 
-		title = (EditText) findViewById(R.id.title_et);
-		description = (EditText) findViewById(R.id.desc_et);
-		reminderDistance = (EditText) findViewById(R.id.rem_et);
+		title = (EditText) findViewById(R.id.e_title_et);
+		description = (EditText) findViewById(R.id.e_desc_et);
+		beginDate = (DatePicker) findViewById(R.id.e_begin_datepicker);
+		endDate = (DatePicker) findViewById(R.id.e_end_datepicker);
 		
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 		idToUpdate = extras.getLong("id");
 		title.setText(extras.getString("title"));
 		description.setText(extras.getString("description"));
-		reminderDistance.setText(extras.getFloat("reminder")+"");
+		
 		}
 		
 	}
@@ -69,7 +74,8 @@ public class EditTaskActivity extends Activity {
 		 Task task = dbHelper.getById(idToUpdate);
 		 task.setTitle(title.getText().toString());
 		 task.setDescription(description.getText().toString());
-		 task.setDone(0);
+		 task.setDone(task.isDone());
+		 task.setBeginDate(getDateInString(beginDate));
 		 dbHelper.update(task);
 	 }
 	 
@@ -87,5 +93,26 @@ public class EditTaskActivity extends Activity {
 			Intent i = new Intent(this, OngoingActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         	startActivity(i);  
+	  }
+	  
+	  private String getDateInString(DatePicker dp) {
+		  StringBuilder res = new StringBuilder();
+		  res.append(String.valueOf(dp.getYear()));
+		  res.append(String.valueOf(dp.getMonth()));
+		  res.append(String.valueOf(dp.getDayOfMonth()));
+		  return res.toString();	  
+	  }
+	  
+	  private void turnOffCalendar() {
+		  int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+		  if (currentapiVersion >= 11) {
+		    try {
+		      Method m = beginDate.getClass().getMethod("setCalendarViewShown", boolean.class);
+		      m.invoke(beginDate, false);
+		      Method m2 = endDate.getClass().getMethod("setCalendarViewShown", boolean.class);
+		      m2.invoke(endDate, false);
+		    }
+		    catch (Exception e) {} // eat exception in our case
+		  }
 	  }
 }
