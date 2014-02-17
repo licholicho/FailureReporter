@@ -27,11 +27,11 @@ public class TaskDbHelper extends SQLiteOpenHelper {
 	        sqlBuilder.append("latitude REAL, ");
 	        sqlBuilder.append("longitude REAL, ");
 	        sqlBuilder.append("place TEXT, ");
-	        sqlBuilder.append("done INT");
-	        sqlBuilder.append("b_date STRING");
-	        sqlBuilder.append("e_date STRING");
-	        sqlBuilder.append("photo_1 BLOB");
-	        sqlBuilder.append("photo_2 BLOB");
+	        sqlBuilder.append("done INT, ");
+	        sqlBuilder.append("b_date STRING, ");
+	        sqlBuilder.append("e_date STRING, ");
+	        sqlBuilder.append("photo_1 BLOB, ");
+	        sqlBuilder.append("photo_2 BLOB, ");
 	        sqlBuilder.append("photo_3 BLOB");
 	        sqlBuilder.append(");");
 
