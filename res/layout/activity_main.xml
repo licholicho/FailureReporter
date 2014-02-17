@@ -1,0 +1,43 @@
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/add_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            
+              <Button
+            android:id="@+id/add_new_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_str" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/ongoing"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+               
+          <Button
+            android:id="@+id/ongoing_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ongoing_str" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/history"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+          
+            <Button
+            android:id="@+id/ongoing_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/history_str" />
+        </TableRow>
+
+    </TableLayout>
+    
+
