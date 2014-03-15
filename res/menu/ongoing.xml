@@ -1,10 +1,55 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+     <item
+        android:id="@+id/menu_bt"
+        android:icon="@drawable/bt_icon"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="bluetooth">
+              <menu>
+            <item
+                android:id="@+id/on_off"
+                android:orderInCategory="10"
+                android:showAsAction="always"
+                android:title="ON/OFF"
+                />
+               <item
+                android:id="@+id/connect"
+                android:orderInCategory="10"
+                android:showAsAction="always"
+                android:title="Connect to device"
+                />
+
+        </menu>
+     </item>
+    
     <item
         android:id="@+id/menu_add"
         android:icon="@android:drawable/ic_menu_add"
         android:orderInCategory="100"
         android:showAsAction="ifRoom|withText"
         android:title="@string/new_task"/>
+    
+      <item
+        android:id="@+id/menu_sort"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/sort">
+        <menu>
+            <item
+                android:id="@+id/sort_title"
+                android:orderInCategory="10"
+                android:showAsAction="always"
+                android:title="@string/title"
+                />
+               <item
+                android:id="@+id/sort_bdate"
+                android:orderInCategory="10"
+                android:showAsAction="always"
+                android:title="@string/start_date"
+                />
+
+        </menu>
+      </item>
 
 </menu>

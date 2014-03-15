@@ -37,6 +37,7 @@ public class MenuAdapter extends BaseAdapter{
 		ImageButton deleteButton;
 		ImageButton editButton;
 		CheckBox done;
+		ImageButton reportButton;
 	}
 
 	public int getCount() {
@@ -61,6 +62,7 @@ public class MenuAdapter extends BaseAdapter{
 			holder.deleteButton = (ImageButton) convertView.findViewById(R.id.menu_delete_button);
 			holder.editButton = (ImageButton) convertView.findViewById(R.id.menu_edit_button);
 			holder.done = (CheckBox) convertView.findViewById(R.id.done_check);
+			holder.reportButton = (ImageButton) convertView.findViewById(R.id.menu_context);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -101,6 +103,7 @@ public class MenuAdapter extends BaseAdapter{
 	        	i.putExtra("id", task.getId());
 	        	i.putExtra("title", task.getTitle());
 	        	i.putExtra("description", task.getDescription());
+	        	i.putExtra("done", task.isDone());
 	        	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	        	context.startActivity(i);
 	        }
@@ -132,7 +135,7 @@ public class MenuAdapter extends BaseAdapter{
 	        	       });
 		        	builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 		        	           public void onClick(DialogInterface dialog, int id) {
-		        	               // User cancelled the dialog
+		        	       
 		        	           }
 		        	       });
 		        	builder.setMessage(R.string.past_or_delete);
@@ -144,6 +147,20 @@ public class MenuAdapter extends BaseAdapter{
 
 		    }
 		});
+		
+		final ImageButton but = holder.reportButton;
+		holder.reportButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				context.registerForContextMenu(but);
+                context.openContextMenu(but);
+                OngoingActivity.setCurrent(pos);
+			}
+		});
+		
+		
 	
 		return convertView;
 	}
@@ -156,5 +173,6 @@ public class MenuAdapter extends BaseAdapter{
 		}
 		this.notifyDataSetChanged();
 	}
+	
 
 }

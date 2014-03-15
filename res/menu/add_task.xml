@@ -5,18 +5,50 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
-    
-        <item
-        android:id="@+id/action_save"
+    <item
+        android:id="@+id/action_camera"
+        android:icon="@drawable/camera_icon"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="@string/save"
-        android:icon="@android:drawable/ic_menu_save"/>
+        android:title="Camera"/>
+    <item
+        android:id="@+id/action_save"
+        android:icon="@android:drawable/ic_menu_save"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/save"/>
     <item
         android:id="@+id/action_cancel"
-        android:orderInCategory="100"
         android:icon="@android:drawable/ic_delete"
-        android:title="@string/cancel"
-        android:showAsAction="always"/>
-
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/cancel"/>
+    <!-- 
+    <item
+        android:id="@+id/action_send"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="Send">
+        <menu>
+            <item
+                android:id="@+id/send_sms"
+                android:icon="@drawable/sms"
+                android:orderInCategory="10"
+                android:showAsAction="withText|ifRoom"
+                android:title="@string/sms"/>
+            <item
+                android:id="@+id/send_email"
+                android:icon="@drawable/mail"
+                android:orderInCategory="20"
+                android:showAsAction="withText|ifRoom"
+                android:title="@string/email"/>
+            <item
+                android:id="@+id/action_export"
+                android:icon="@drawable/bt_icon"
+                android:orderInCategory="100"
+                android:showAsAction="always"
+                android:title="@string/bluetooth"/>
+        </menu>
+    </item>
+ -->
 </menu>

@@ -1,5 +1,6 @@
 package task;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,38 +12,50 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
-public class Task {
+public class Task implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private long id;
 	private String title;
 	private String description;
-	private Location location;
-	private Date beginDate;
-	private Date endDate;
+	private String beginDate;
+	private String endDate;
 	private List<byte[]> photos;
 	private boolean status;
-	
+	private float latitude;
+	private float longitude;
+	private String nameOfPlace;
+
+
 	
 	public Task() {
 		this.title = "";
 		this.description = "";
-		this.location = new Location();
 		this.status = false;
-		this.beginDate = new Date();
-		this.endDate = new Date();
+		this.beginDate = "";
+		this.endDate = "";
 		this.photos = new ArrayList<byte[]>();
+		this.latitude = 0;
+		this.longitude = 0;
+		this.nameOfPlace = "";
 	}
 	
 	public Task(String title, String description, Location location) {
 		super();
 		this.title = title;
 		this.description = description;
-		this.location = location;
 		this.status = false;
-		this.beginDate = new Date();
-		this.endDate = new Date();
+		this.beginDate = "";
+		this.endDate = "";
 		this.photos = new ArrayList<byte[]>();
+		this.latitude = 0;
+		this.longitude = 0;
+		this.nameOfPlace = "";
 	}
 
 	public Task(String title, String description) {
@@ -50,10 +63,12 @@ public class Task {
 		this.title = title;
 		this.description = description;
 		this.status = false;
-		this.location = new Location();
-		this.beginDate = new Date();
-		this.endDate = new Date();
+		this.beginDate = "";
+		this.endDate = "";
 		this.photos = new ArrayList<byte[]>();
+		this.latitude = 0;
+		this.longitude = 0;
+		this.nameOfPlace = "";
 	}
 	
 	public long getId() {
@@ -64,34 +79,56 @@ public class Task {
 		this.id = id;
 	}
 	
-	public Location getLocation() {
-		return location;
+	public float getLatitude() {
+		return latitude;
 	}
-	
-	public void setLocation(Location location) {
-		this.location = location;
+
+	public void setLatitude(float latitude) {
+		this.latitude = latitude;
+	}
+
+	public float getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(float longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getNameOfPlace() {
+		return nameOfPlace;
+	}
+
+	public void setNameOfPlace(String nameOfPlace) {
+		this.nameOfPlace = nameOfPlace;
 	}
 	
 	public String getTitle() {
 		return title;
 	}
+	
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
 	public String getDescription() {
 		return description;
 	}
+	
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	public boolean isDone() {
 		return status;
 	}
+	
 	public void setDone(boolean done) {
 		this.status = done;
 	}
 	
 	public void setDone(int d) {
+		Log.i("lol","done");
 		if (d == 1) this.status = true;
 		else this.status = false;
 	}
@@ -101,27 +138,35 @@ public class Task {
 	}
 
 	public Date getBeginDate() {
+		return stringToDate(beginDate);
+	}
+	
+	public String getBeginDateInString() {
 		return beginDate;
 	}
 	
 	public void setBeginDate(String beginDate) {
-		this.beginDate = stringToDate(beginDate);
+		this.beginDate = dateToString(stringToDate(beginDate));
 	}
 
 	public void setBeginDate(Date beginDate) {
-		this.beginDate = beginDate;
+		this.beginDate = dateToString(beginDate);
 	}
 
 	public Date getEndDate() {
+		return stringToDate(endDate);
+	}
+	
+	public String getEndDateInString() {
 		return endDate;
 	}
 
 	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+		this.endDate = dateToString(endDate);
 	}
 	
 	public void setEndDate(String endDate) {
-		this.endDate = stringToDate(endDate);
+		this.endDate = dateToString(stringToDate(endDate));
 	}
 
 	public List<byte[]> getPhotos() {

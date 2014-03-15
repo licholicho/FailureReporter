@@ -30,12 +30,12 @@ public class TaskDbFacade {
         ContentValues v = new ContentValues();
         v.put("title", t.getTitle());
         v.put("description", t.getDescription());
-        v.put("latitude", t.getLocation().getLatitude());
-        v.put("longitude", t.getLocation().getLongitude());
-        v.put("place", t.getLocation().getNameOfPlace());
+        v.put("latitude", t.getLatitude());
+        v.put("longitude", t.getLongitude());
+        v.put("place", t.getNameOfPlace());
         v.put("done", 0);
-        v.put("b_date", t.dateToString(t.getBeginDate()));
-        v.put("e_date", t.dateToString(t.getEndDate()));
+        v.put("b_date", t.getBeginDateInString());
+        v.put("e_date", t.getEndDateInString());
         if (!t.getPhotos().isEmpty()) {
         if (t.getPhotos().size() > 0)
         v.put("photo_1", t.getPhotoInBytes(0));
@@ -55,12 +55,12 @@ public class TaskDbFacade {
         ContentValues v = new ContentValues();
         v.put("title", t.getTitle());
         v.put("description", t.getDescription());
-        v.put("latitude", t.getLocation().getLatitude());
-        v.put("longitude", t.getLocation().getLongitude());
-        v.put("place", t.getLocation().getNameOfPlace());
-        v.put("done", 0);
-        v.put("b_date", t.dateToString(t.getBeginDate()));
-        v.put("e_date", t.dateToString(t.getEndDate()));
+        v.put("latitude", t.getLatitude());
+        v.put("longitude", t.getLongitude());
+        v.put("place", t.getNameOfPlace());
+        v.put("done", t.done());
+        v.put("b_date", t.getBeginDateInString());
+        v.put("e_date", t.getEndDateInString());
         if (!t.getPhotos().isEmpty()) {
         if (t.getPhotos().size() > 0)
         v.put("app_icon", t.getPhotoInBytes(0));
@@ -81,6 +81,7 @@ public class TaskDbFacade {
     }
 
     public boolean delete(long id) {
+    	Log.i("lol","usuwa");
         validate();
         return (1 == db
                 .delete(TaskDbHelper.TABLE_TASKS, "_id=" + id, null));
@@ -166,6 +167,25 @@ public class TaskDbFacade {
         return Collections.unmodifiableList(result);
     }
     
+    public List<Task> listAllSortedBy(String field, int done) {
+        validate();
+        List<Task> result = new LinkedList<Task>();
+        Cursor cur = null;
+        try {
+            cur = db.query(true, TaskDbHelper.TABLE_TASKS, null /* all */,
+            		"done = " + String.valueOf(done), null, null, null, field + " desc", null);
+            extractTasksFromCursor(result, cur);
+        } catch (SQLException e) {
+            Log.e("topics.database", "Error searching application database.", e);
+        } finally {
+            if (cur != null && !cur.isClosed()) {
+                cur.close();
+            }
+        }
+
+        return Collections.unmodifiableList(result);
+    }
+    
     public Cursor getCursorForAllMovies() {
         validate();
         Cursor cur = null;
@@ -186,12 +206,12 @@ public class TaskDbFacade {
                 a.setId(cur.getLong(0));
                 a.setTitle(cur.getString(1));
                 a.setDescription(cur.getString(2));
-                a.getLocation().setLatitude(cur.getFloat(4));
-                a.getLocation().setLongitude(cur.getFloat(5));
-                a.getLocation().setNameOfPlace(cur.getString(6));
+                a.setLatitude(cur.getFloat(4));
+                a.setLongitude(cur.getFloat(5));
+                a.setNameOfPlace(cur.getString(6));
                 a.setDone(cur.getInt(7));
-                a.setBeginDate(a.stringToDate(cur.getString(8)));
-                a.setEndDate(a.stringToDate(cur.getString(9)));
+                a.setBeginDate(cur.getString(8));
+                a.setEndDate(cur.getString(9));
                 if (cur.getBlob(10) != null)
                 	a.setPhoto(0, cur.getBlob(10));
                 if (cur.getBlob(11) != null)

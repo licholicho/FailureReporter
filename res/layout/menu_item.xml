@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+ >
     
   <TableRow
             android:id="@+id/tr1"
@@ -37,14 +38,21 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/ic_action_edit" />
-                     <CheckBox
+              <ImageButton
+              android:id="@+id/menu_context"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:src="@drawable/send"
+               />
+                           <CheckBox
               android:id="@+id/done_check"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="Done" />
-          </LinearLayout>
+              android:text="@string/done"
+              android:layout_marginTop="5dp"
+              android:textSize="20sp" />
+                   </LinearLayout>
+                   </TableRow>
 
-        
-    
-          </TableRow>
+
 </TableLayout>

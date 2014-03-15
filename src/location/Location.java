@@ -1,7 +1,13 @@
 package location;
 
-public class Location {
+import java.io.Serializable;
 
+public class Location implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1227786518655787196L;
 	private float latitude;
 	private float longitude;
 	private String nameOfPlace;

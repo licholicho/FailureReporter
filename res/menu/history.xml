@@ -8,5 +8,31 @@
         android:showAsAction="ifRoom|withText"
         
         />
+    
+    <item
+        android:id="@+id/menu_sort"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/sort">
+        <menu>
+            <item
+                android:id="@+id/sort_title"
+                android:orderInCategory="10"
+                android:showAsAction="always"
+                android:title="@string/title"
+                />
+               <item
+                android:id="@+id/sort_bdate"
+                android:orderInCategory="10"
+                android:showAsAction="always"
+                android:title="@string/start_date"
+                />
+            <item
+                android:id="@+id/sort_edate"
+                android:orderInCategory="20"
+                android:showAsAction="always"
+                android:title="@string/end_date"/>
+        </menu>
+      </item>
 
 </menu>

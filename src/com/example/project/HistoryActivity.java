@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.example.failurereporter.R;
@@ -40,6 +41,21 @@ public class HistoryActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.sort_title) {
+			sortByTitle();
+		}
+		if (item.getItemId() == R.id.sort_bdate) {
+			sortByBdate();
+		}
+		if (item.getItemId() == R.id.sort_edate) {
+			sortByEdate();
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
 	private void setupDbEnv() {
 		Log.i("topics.database", "setup!");
 		if (dbOpenHelper == null) {
@@ -56,6 +72,21 @@ public class HistoryActivity extends Activity {
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(i);
 		super.onBackPressed();
+	}
+
+	public void sortByTitle() {
+		tasks = dbHelper.listAll();
+		taskLv.setAdapter(new MenuAdapter(this, tasks));
+	}
+
+	public void sortByBdate() {
+		tasks = dbHelper.listAllSortedBy("b_date", 1);
+		taskLv.setAdapter(new MenuAdapter(this, tasks));
+	}
+
+	public void sortByEdate() {
+		tasks = dbHelper.listAllSortedBy("e_date", 1);
+		taskLv.setAdapter(new MenuAdapter(this, tasks));
 	}
 
 }

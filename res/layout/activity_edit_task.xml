@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView2"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    
+<TableLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content"
+    android:stretchColumns="0" >
 
+           <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+     
+         <CheckBox
+              android:id="@+id/e_done"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/done" />
+
+    </TableRow>
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -24,8 +41,6 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="" >
-
-            <requestFocus />
         </EditText>
     </TableRow>
 
@@ -38,12 +53,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/description" />
-    </TableRow>
+   </TableRow>
 
     <TableRow
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
-
         <EditText
             android:id="@+id/e_desc_et"
             android:layout_width="fill_parent"
@@ -51,7 +65,6 @@
             android:ems="10"
             android:hint="" >
 
-            <requestFocus />
         </EditText>
     </TableRow>
 
@@ -78,7 +91,6 @@
             android:ems="10"
              >
 
-            <requestFocus />
         </EditText>
     </TableRow>
     
@@ -101,7 +113,8 @@
         <DatePicker
                 android:id="@+id/e_begin_datepicker"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_gravity="left" >
             </DatePicker>
 
     </TableRow>
@@ -124,9 +137,111 @@
         <DatePicker
                 android:id="@+id/e_end_datepicker"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_gravity="left" >
             </DatePicker>
 
     </TableRow>
+    
+      
+      <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/e_loc_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/location" />
+    </TableRow>
+    
+         <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+             <Button
+                 android:id="@+id/e_get_loc_b"
+                 style="?android:attr/buttonStyleSmall"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Get current location" />
+   
+    </TableRow>
+
+        <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/adres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Address" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+        <EditText
+            android:id="@+id/e_loc_et"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+             >
+        </EditText>
+    </TableRow>
+    
+
+<TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+ 
+        <TextView
+            android:id="@+id/e_long_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Longitude" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+        <EditText
+            android:id="@+id/e_long_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+             >
+        </EditText>
+        </TableRow>
+        
+<TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+                <TextView
+            android:id="@+id/e_lat_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Latitude" />
+     </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/e_lat_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+             >
+
+         
+        </EditText>
+        </TableRow>
 
 </TableLayout>
+</ScrollView>
