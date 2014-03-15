@@ -5,7 +5,7 @@
     android:layout_height="fill_parent" >
 
     <TableLayout
-        android:id="@+id/tableLayout_add"
+         android:id="@+id/tableLayout_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stretchColumns="0" >
@@ -194,40 +194,9 @@
                 android:inputType="number" >
             </EditText>
         </TableRow>
-    <TableRow
-        android:id="@+id/TableRow01"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <Button
-            android:id="@+id/button_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Camera" />
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/photo1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/photo2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/photo3"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-    </TableRow>
-
+  
 </TableLayout>        
-        
+         
 
 
 </ScrollView>

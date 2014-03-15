@@ -1,7 +1,9 @@
 package com.example.project;
 
+import java.io.IOException;
 import java.util.List;
 
+import task.Serializer;
 import task.Task;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -99,11 +101,19 @@ public class MenuAdapter extends BaseAdapter{
 	        public void onClick(View v) {
 	        	Log.i("ongoing","edit!");
 	        	Intent i = new Intent();
+	     /*   	byte[] taskToSend = null;
+	        	try {
+					taskToSend = Serializer.serialize(task);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}*/
 	        	i.setClass(context, EditTaskActivity.class);
-	        	i.putExtra("id", task.getId());
+	        	i.putExtra("task", task);
+	        /*	i.putExtra("id", task.getId());
 	        	i.putExtra("title", task.getTitle());
 	        	i.putExtra("description", task.getDescription());
-	        	i.putExtra("done", task.isDone());
+	        	i.putExtra("done", task.isDone());*/
 	        	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	        	context.startActivity(i);
 	        }

@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -34,6 +35,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -68,7 +71,7 @@ public class AddTaskActivity extends Activity {
 
 	//private Button button_camera;
 	protected static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
-	protected static final int STABLE_CHILD_COUNT = 18;
+	protected static final int STABLE_CHILD_COUNT = 14; // 14
 	Uri imageUri;
 	List<byte[]> photos;
 
@@ -90,6 +93,7 @@ public class AddTaskActivity extends Activity {
 		addressEt = (EditText) findViewById(R.id.loc_et);
 		beginDate = (DatePicker) findViewById(R.id.begin_datepicker);
 		turnOffCalendar();
+		photos = new ArrayList<byte[]>();
 
 		if (savedInstanceState != null) {
 			Log.i("lala", "title " + savedInstanceState.getString("title"));
@@ -101,6 +105,19 @@ public class AddTaskActivity extends Activity {
 			addressEt.setText(savedInstanceState.getString("address"));
 			longitudeEt.setText(savedInstanceState.getString("long"));
 			latitudeEt.setText(savedInstanceState.getString("lat"));
+			for(int i = 0; i < 3; i++) {
+			byte[] photo = savedInstanceState.getByteArray("photo"+i);
+				if(photo != null) {
+					photos.add(i, photo);
+				} else {
+					break;
+				}
+			}
+			
+			if(!photos.isEmpty()) {
+				for(int i = 0; i < photos.size(); i++)
+					createPhotoRow(photos.get(i), i+1);
+			}
 		}
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		// Define the criteria how to select the locatioin provider -> use
@@ -130,19 +147,14 @@ public class AddTaskActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Log.i("gowno", "lol");
+				Log.i("koko", "lol jest ich "+myTableLayout.getChildCount());
 				String address = addressEt.getText().toString();
 				locThread = new LocationThread(Utils.GET_FROM_ADDRESS, address);
 				locThread.start();
 			}
 		});
 		
-		//
-	//	button_camera = (Button) findViewById(R.id.button_camera);
-		photo1 = (TableRow) findViewById(R.id.photo1);
-		photo2 = (TableRow) findViewById(R.id.photo2);
-		photo3 = (TableRow) findViewById(R.id.photo3);
-		photos = new ArrayList<byte[]>();
+		
 		/*button_camera.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -202,6 +214,10 @@ public class AddTaskActivity extends Activity {
 		task.setTitle(title.getText().toString());
 		task.setDescription(description.getText().toString());
 		task.setBeginDate(getDateInString(beginDate));
+		task.setNameOfPlace(addressEt.getText().toString());
+		task.setLongitude(longitudeEt.getText().toString());
+		task.setLatitude(latitudeEt.getText().toString());
+		task.setPhotos(photos);
 		// zmienic
 		Log.i("topics", "dzieciaki "+myTableLayout.getChildCount());
 
@@ -290,8 +306,8 @@ public class AddTaskActivity extends Activity {
 		savedInstanceState.putString("address", addressEt.getText().toString());
 		savedInstanceState.putString("lat", latitudeEt.getText().toString());
 		savedInstanceState.putString("long", longitudeEt.getText().toString());
-		for (byte[] photo : photos)
-		savedInstanceState.putByteArray("photos", photo);
+		for (int i = 0; i < photos.size(); i++)
+		savedInstanceState.putByteArray("photo"+i, photos.get(i));
 	}
 
 	private void suggestReport() {
@@ -402,6 +418,46 @@ public class AddTaskActivity extends Activity {
             }
         });
     }
+	
+	private void createPhotoRow(byte[] photoBytes, int n) {
+		final TableRow tr = new TableRow(this);
+		
+		Bitmap picture = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
+        ImageView photo = new ImageView(this);
+        photo.setPadding(5, 2, 5, 2);
+        photo.setImageBitmap(picture);
+        ImageButton imageDeleteButton = new ImageButton(this);
+     //   imageDeleteButton.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        imageDeleteButton.setBackgroundResource(R.drawable.ic_action_discard);
+        imageDeleteButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+			
+				int currentChildCount = myTableLayout.getChildCount();
+				Log.i("koko"," ccc "+currentChildCount);
+				int id = tr.getId();
+				Log.i("koko","kliknelam "+id);
+				photos.remove(id-STABLE_CHILD_COUNT-1);
+				for (int i = id; i<= currentChildCount; i++) {
+					Log.i("koko","for "+i+ " ccc "+currentChildCount);
+					View view = myTableLayout.getChildAt(i-1);
+					if (view == null)
+						Log.i("koko","o matko to jest null :(");
+					int oldId = view.getId();
+					oldId -= 1;
+					view.setId(oldId);
+				}
+				View viewUp = tr.focusSearch(View.FOCUS_UP);
+				myTableLayout.removeView(tr);
+				viewUp.requestFocus();
+			}
+		});
+        tr.addView(photo);
+        tr.addView(imageDeleteButton);
+        tr.setId(STABLE_CHILD_COUNT+n);
+        myTableLayout.addView(tr);
+	}
 
 	@Override
 	protected void onPause() {
@@ -430,10 +486,11 @@ public class AddTaskActivity extends Activity {
 		        Log.i("koko","przed "+myTableLayout.getChildCount());
 		        final TableRow tr = new TableRow(this);
 		        ImageView photo = new ImageView(this);
-		        photo.setPadding(5, 2, 5, 2);
+		        photo.setPadding(2, 2, 2, 2);
 		        photo.setImageBitmap(picture);
 		        ImageButton imageDeleteButton = new ImageButton(this);
-		        imageDeleteButton.setBackgroundResource(R.drawable.ic_action_remove);
+		        imageDeleteButton.setBackgroundResource(R.drawable.ic_action_discard);
+
 		        imageDeleteButton.setOnClickListener(new OnClickListener() {
 					
 					@Override

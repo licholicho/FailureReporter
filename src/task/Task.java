@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import location.Location;
@@ -27,8 +29,8 @@ public class Task implements Serializable {
 	private String endDate;
 	private List<byte[]> photos;
 	private boolean status;
-	private float latitude;
-	private float longitude;
+	private double latitude;
+	private double longitude;
 	private String nameOfPlace;
 
 
@@ -45,19 +47,7 @@ public class Task implements Serializable {
 		this.nameOfPlace = "";
 	}
 	
-	public Task(String title, String description, Location location) {
-		super();
-		this.title = title;
-		this.description = description;
-		this.status = false;
-		this.beginDate = "";
-		this.endDate = "";
-		this.photos = new ArrayList<byte[]>();
-		this.latitude = 0;
-		this.longitude = 0;
-		this.nameOfPlace = "";
-	}
-
+	
 	public Task(String title, String description) {
 		super();
 		this.title = title;
@@ -79,20 +69,28 @@ public class Task implements Serializable {
 		this.id = id;
 	}
 	
-	public float getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(float latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
-
-	public float getLongitude() {
+	
+	public void setLatitude(String latitude) {
+		this.latitude = Double.valueOf(longitude);
+	}
+	
+	public double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(float longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
+	}
+	
+	public void setLongitude(String longitude) {
+		this.longitude = Double.valueOf(longitude);
 	}
 
 	public String getNameOfPlace() {
@@ -152,10 +150,6 @@ public class Task implements Serializable {
 	public void setBeginDate(Date beginDate) {
 		this.beginDate = dateToString(beginDate);
 	}
-
-	public Date getEndDate() {
-		return stringToDate(endDate);
-	}
 	
 	public String getEndDateInString() {
 		return endDate;
@@ -167,6 +161,42 @@ public class Task implements Serializable {
 	
 	public void setEndDate(String endDate) {
 		this.endDate = dateToString(stringToDate(endDate));
+	}
+	
+	private GregorianCalendar getStartDate() {
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.setTime(stringToDate(beginDate)); 
+		return (GregorianCalendar)cal;
+	}
+	
+	private GregorianCalendar getEndDate() {
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.setTime(stringToDate(endDate)); 
+		return (GregorianCalendar)cal;
+	}
+	
+	public int getStartDay() {
+		return getStartDate().get(Calendar.DAY_OF_MONTH);
+	}
+	
+	public int getStartMonth() {
+		return getStartDate().get(Calendar.MONTH);
+	}
+	
+	public int getStartYear(){
+		return getStartDate().get(Calendar.YEAR);
+	}
+	
+	public int getEndDay() {
+		return getEndDate().get(Calendar.DAY_OF_MONTH);
+	}
+	
+	public int getEndMonth() {
+		return getEndDate().get(Calendar.MONTH);
+	}
+	
+	public int getEndYear(){
+		return getEndDate().get(Calendar.YEAR);
 	}
 
 	public List<byte[]> getPhotos() {
