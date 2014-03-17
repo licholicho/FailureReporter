@@ -40,6 +40,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.failurereporter.R;
@@ -71,8 +72,10 @@ public class AddTaskActivity extends Activity {
 
 	//private Button button_camera;
 	protected static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
-	protected static final int STABLE_CHILD_COUNT = 14; // 14
+	protected static final int BACK_FROM_OUTSIDE_APP = 101;
+	protected static final int STABLE_CHILD_COUNT = 15; 
 	Uri imageUri;
+	private TextView photosTv;
 	List<byte[]> photos;
 
 
@@ -93,6 +96,7 @@ public class AddTaskActivity extends Activity {
 		addressEt = (EditText) findViewById(R.id.loc_et);
 		beginDate = (DatePicker) findViewById(R.id.begin_datepicker);
 		turnOffCalendar();
+		photosTv = (TextView) findViewById(R.id.photos_tv);
 		photos = new ArrayList<byte[]>();
 
 		if (savedInstanceState != null) {
@@ -188,8 +192,7 @@ public class AddTaskActivity extends Activity {
 			}
 			break;
 		case R.id.action_cancel:
-			if (sureToCancel())
-				goBack();
+			sureToCancel();
 			break;
 		case R.id.action_camera:
 			if (photos.size()<3){
@@ -273,7 +276,7 @@ public class AddTaskActivity extends Activity {
 		i.putExtra(Intent.EXTRA_SUBJECT, "NEW UNSOLVED FAILURE!");
 		i.putExtra(Intent.EXTRA_TEXT, body.toString());
 		try {
-			startActivity(Intent.createChooser(i, "Send mail..."));
+			startActivityForResult(Intent.createChooser(i, "Send mail..."), BACK_FROM_OUTSIDE_APP);
 		} catch (android.content.ActivityNotFoundException ex) {
 			Toast.makeText(AddTaskActivity.this,
 					"There are no email clients installed.", Toast.LENGTH_SHORT)
@@ -291,7 +294,7 @@ public class AddTaskActivity extends Activity {
 		sendSms.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
 		sendSms.putExtra("sms_body", body.toString());
 		sendSms.setType("vnd.android-dir/mms-sms");
-		startActivity(sendSms);
+		startActivityForResult(sendSms, BACK_FROM_OUTSIDE_APP);
 	}
 
 	@Override
@@ -337,9 +340,21 @@ public class AddTaskActivity extends Activity {
 		dialog.show();
 	}
 
-	private boolean sureToCancel() {
-
-		return true;
+	private void sureToCancel() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	// Add the buttons
+    	builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+    	           public void onClick(DialogInterface dialog, int id) {
+    	        	   goBack();
+    	           }
+    	       });
+    	builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+    	           public void onClick(DialogInterface dialog, int id) {
+    	           }
+    	       });
+    	builder.setMessage("Sure to cancel? Changes won't be saved");
+    	AlertDialog dialog = builder.create();
+    	dialog.show();
 	}
 
 	class LocationThread extends Thread {
@@ -421,7 +436,8 @@ public class AddTaskActivity extends Activity {
 	
 	private void createPhotoRow(byte[] photoBytes, int n) {
 		final TableRow tr = new TableRow(this);
-		
+		LinearLayout ll = new LinearLayout(this);
+		ll.setOrientation(LinearLayout.HORIZONTAL);
 		Bitmap picture = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
         ImageView photo = new ImageView(this);
         photo.setPadding(5, 2, 5, 2);
@@ -453,9 +469,12 @@ public class AddTaskActivity extends Activity {
 				viewUp.requestFocus();
 			}
 		});
-        tr.addView(photo);
-        tr.addView(imageDeleteButton);
+        ll.addView(photo);
+        ll.addView(imageDeleteButton);
+       // tr.addView(photo);
+       // tr.addView(imageDeleteButton);
         tr.setId(STABLE_CHILD_COUNT+n);
+        tr.addView(ll);
         myTableLayout.addView(tr);
 	}
 
@@ -471,6 +490,10 @@ public class AddTaskActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
+		if (requestCode == BACK_FROM_OUTSIDE_APP) {
+			goBack();
+		}
+		
 		if (resultCode == RESULT_OK) {
 			if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 				Bundle extras = data.getExtras();
@@ -483,8 +506,12 @@ public class AddTaskActivity extends Activity {
 		        byte[] byteArray = stream.toByteArray();
 		        photos.add(byteArray);
 		        
+		        photosTv.setVisibility(View.VISIBLE);
+		        
 		        Log.i("koko","przed "+myTableLayout.getChildCount());
 		        final TableRow tr = new TableRow(this);
+		        LinearLayout ll = new LinearLayout(this);
+		        ll.setOrientation(LinearLayout.HORIZONTAL);
 		        ImageView photo = new ImageView(this);
 		        photo.setPadding(2, 2, 2, 2);
 		        photo.setImageBitmap(picture);
@@ -501,6 +528,8 @@ public class AddTaskActivity extends Activity {
 						int id = tr.getId();
 						Log.i("koko","kliknelam "+id);
 						photos.remove(id-STABLE_CHILD_COUNT-1);
+						if(photos.isEmpty())
+							photosTv.setVisibility(View.INVISIBLE);
 						for (int i = id; i<= currentChildCount; i++) {
 							Log.i("koko","for "+i+ " ccc "+currentChildCount);
 							View view = myTableLayout.getChildAt(i-1);
@@ -515,9 +544,12 @@ public class AddTaskActivity extends Activity {
 						viewUp.requestFocus();
 					}
 				});
-		        tr.addView(photo);
-		        tr.addView(imageDeleteButton);
+		        ll.addView(photo);
+		        ll.addView(imageDeleteButton);
+		       // tr.addView(photo);
+		      // tr.addView(imageDeleteButton);
 		        tr.setId(STABLE_CHILD_COUNT+photos.size());
+		        tr.addView(ll);
 		        myTableLayout.addView(tr);
 		      /*  if (photos.size()==3){
 	        	//	button_camera.setEnabled(false);

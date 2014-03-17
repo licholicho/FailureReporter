@@ -74,7 +74,8 @@ public class EditTaskActivity extends Activity {
 	private Button getLocationByAddress;
 	
 	protected static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
-	protected static final int STABLE_CHILD_COUNT = 14; // 14
+	protected static final int PHOTO_TAKEN = 101;
+	protected static final int STABLE_CHILD_COUNT = 19; 
 	Uri imageUri;
 	List<byte[]> photos;
 
@@ -212,8 +213,7 @@ public class EditTaskActivity extends Activity {
 			}
 			break;
 		case R.id.action_cancel:
-			if (sureToCancel())
-			goBack();
+			sureToCancel();
 			break;
 		case R.id.action_camera:
 			if (photos.size()<3){
@@ -327,7 +327,8 @@ public class EditTaskActivity extends Activity {
 		Intent sendSms = new Intent(Intent.ACTION_VIEW);
 		sendSms.putExtra("sms_body", body.toString());
 		sendSms.setType("vnd.android-dir/mms-sms");
-		startActivity(sendSms);
+		//startActivity(sendSms);
+		startActivityForResult(sendSms, PHOTO_TAKEN);
 	}
 
 	private void suggestReport() {
@@ -357,9 +358,21 @@ public class EditTaskActivity extends Activity {
 		dialog.show();
 	}
 
-	private boolean sureToCancel() {
-
-		return true;
+	private void sureToCancel() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	// Add the buttons
+    	builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+    	           public void onClick(DialogInterface dialog, int id) {
+    	        	   goBack();
+    	           }
+    	       });
+    	builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+    	           public void onClick(DialogInterface dialog, int id) {
+    	           }
+    	       });
+    	builder.setMessage("Sure to cancel? Changes won't be saved");
+    	AlertDialog dialog = builder.create();
+    	dialog.show();
 	}
 	
 	private String isDone() {
@@ -518,6 +531,10 @@ public class EditTaskActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (requestCode == PHOTO_TAKEN) {
+			goBack();
+		}
 		
 		if (resultCode == RESULT_OK) {
 			if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {

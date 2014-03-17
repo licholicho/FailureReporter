@@ -12,7 +12,8 @@
 
            <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content" 
+        android:background="@color/common_action_bar_splitter">
      
          <CheckBox
               android:id="@+id/e_done"
@@ -229,6 +230,17 @@
          
         </EditText>
         </TableRow>
+         <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
+            <TextView
+                android:id="@+id/e_photos_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Photos"
+                android:visibility="invisible"
+                android:textSize="20sp" />
+        </TableRow>
 </TableLayout>
 </ScrollView>

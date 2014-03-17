@@ -26,7 +26,7 @@ public class Task implements Serializable {
 	private String title;
 	private String description;
 	private String beginDate;
-	private String endDate;
+	private String endDate = dateToString(new Date(Long.MAX_VALUE));
 	private List<byte[]> photos;
 	private boolean status;
 	private double latitude;
@@ -78,6 +78,7 @@ public class Task implements Serializable {
 	}
 	
 	public void setLatitude(String latitude) {
+		if (latitude.matches("-?\\d+(\\.\\d*)?"))
 		this.latitude = Double.valueOf(longitude);
 	}
 	
@@ -90,6 +91,7 @@ public class Task implements Serializable {
 	}
 	
 	public void setLongitude(String longitude) {
+		if (longitude.matches("-?\\d+(\\.\\d*)?"))
 		this.longitude = Double.valueOf(longitude);
 	}
 
