@@ -222,7 +222,8 @@ public class AddTaskActivity extends Activity {
 		task.setLatitude(latitudeEt.getText().toString());
 		task.setPhotos(photos);
 		// zmienic
-		Log.i("topics", "dzieciaki "+myTableLayout.getChildCount());
+		Log.i("topics", "zapisuje long "+task.getLongitude() );
+		Log.i("topics", "zapisuje lat "+task.getLatitude());
 
 		dbHelper.insert(task);
 		Log.i("topics", "save2");
@@ -505,7 +506,6 @@ public class AddTaskActivity extends Activity {
 		        picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 		        byte[] byteArray = stream.toByteArray();
 		        photos.add(byteArray);
-		        
 		        photosTv.setVisibility(View.VISIBLE);
 		        
 		        Log.i("koko","przed "+myTableLayout.getChildCount());
@@ -529,7 +529,7 @@ public class AddTaskActivity extends Activity {
 						Log.i("koko","kliknelam "+id);
 						photos.remove(id-STABLE_CHILD_COUNT-1);
 						if(photos.isEmpty())
-							photosTv.setVisibility(View.INVISIBLE);
+							photosTv.setVisibility(View.GONE);
 						for (int i = id; i<= currentChildCount; i++) {
 							Log.i("koko","for "+i+ " ccc "+currentChildCount);
 							View view = myTableLayout.getChildAt(i-1);

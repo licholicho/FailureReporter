@@ -79,7 +79,7 @@ public class Task implements Serializable {
 	
 	public void setLatitude(String latitude) {
 		if (latitude.matches("-?\\d+(\\.\\d*)?"))
-		this.latitude = Double.valueOf(longitude);
+		this.latitude = Double.valueOf(latitude);
 	}
 	
 	public double getLongitude() {

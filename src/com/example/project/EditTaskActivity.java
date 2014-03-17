@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
@@ -40,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.failurereporter.R;
@@ -74,9 +74,10 @@ public class EditTaskActivity extends Activity {
 	private Button getLocationByAddress;
 	
 	protected static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
-	protected static final int PHOTO_TAKEN = 101;
+	protected static final int BACK_FROM_OUTSIDE_APP = 101;
 	protected static final int STABLE_CHILD_COUNT = 19; 
 	Uri imageUri;
+	private TextView photosTv;
 	List<byte[]> photos;
 
 	@Override
@@ -98,6 +99,7 @@ public class EditTaskActivity extends Activity {
 		getLocationButton = (Button) findViewById(R.id.e_get_loc_b);
 		getLocationByAddress = (Button) findViewById(R.id.e_get_loc_bn);
 		turnOffCalendar();
+		photosTv = (TextView) findViewById(R.id.e_photos_tv);
 
 		if (savedInstanceState != null) {
 			Log.i("lala", "title " + savedInstanceState.getString("title"));
@@ -292,7 +294,7 @@ public class EditTaskActivity extends Activity {
 
 	private void sendEmail() {
 		StringBuilder body = new StringBuilder();
-		body.append("NEW UNSOLVED FAILURE!").append("\n");
+		body.append("UPDATED INFO ABOUT UNSOLVED FAILURE!").append("\n");
 		body.append(title.getText().toString()).append("\n");
 		body.append(description.getText().toString()).append("\n");
 		body.append("Notification date: ").append(getDateInString(beginDate))
@@ -303,10 +305,10 @@ public class EditTaskActivity extends Activity {
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("message/rfc822");
 		i.putExtra(Intent.EXTRA_EMAIL, "");
-		i.putExtra(Intent.EXTRA_SUBJECT, "NEW UNSOLVED FAILURE!");
+		i.putExtra(Intent.EXTRA_SUBJECT, "UPDATED INFO ABOUT "+title.getText().toString().toUpperCase()+"!");
 		i.putExtra(Intent.EXTRA_TEXT, body.toString());
 		try {
-			startActivity(Intent.createChooser(i, "Send mail..."));
+			startActivityForResult(Intent.createChooser(i, "Send mail..."), BACK_FROM_OUTSIDE_APP);
 		} catch (android.content.ActivityNotFoundException ex) {
 			Toast.makeText(EditTaskActivity.this,
 					"There are no email clients installed.", Toast.LENGTH_SHORT)
@@ -316,7 +318,7 @@ public class EditTaskActivity extends Activity {
 
 	private void sendSms() {
 		StringBuilder body = new StringBuilder();
-		body.append("NEW UNSOLVED FAILURE!").append("\n");
+		body.append("UPDATED INFO ABOUT UNSOLVED FAILURE!").append("\n");
 		body.append(title.getText().toString()).append("\n");
 		body.append(description.getText().toString()).append("\n");
 		body.append("Notification date: ").append(getDateInString(beginDate))
@@ -328,7 +330,7 @@ public class EditTaskActivity extends Activity {
 		sendSms.putExtra("sms_body", body.toString());
 		sendSms.setType("vnd.android-dir/mms-sms");
 		//startActivity(sendSms);
-		startActivityForResult(sendSms, PHOTO_TAKEN);
+		startActivityForResult(sendSms, BACK_FROM_OUTSIDE_APP);
 	}
 
 	private void suggestReport() {
@@ -532,7 +534,7 @@ public class EditTaskActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		if (requestCode == PHOTO_TAKEN) {
+		if (requestCode == BACK_FROM_OUTSIDE_APP) {
 			goBack();
 		}
 		
@@ -547,6 +549,7 @@ public class EditTaskActivity extends Activity {
 		        picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 		        byte[] byteArray = stream.toByteArray();
 		        photos.add(byteArray);
+		        photosTv.setVisibility(View.VISIBLE);
 		        
 		        Log.i("koko","przed "+myTableLayout.getChildCount());
 		        final TableRow tr = new TableRow(this);
@@ -566,6 +569,8 @@ public class EditTaskActivity extends Activity {
 						int id = tr.getId();
 						Log.i("koko","kliknelam "+id);
 						photos.remove(id-STABLE_CHILD_COUNT-1);
+						if(photos.isEmpty())
+							photosTv.setVisibility(View.GONE);
 						for (int i = id; i<= currentChildCount; i++) {
 							Log.i("koko","for "+i+ " ccc "+currentChildCount);
 							View view = myTableLayout.getChildAt(i-1);
