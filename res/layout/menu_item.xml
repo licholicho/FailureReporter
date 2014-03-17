@@ -32,12 +32,12 @@
               android:id="@+id/menu_delete_button"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:src="@drawable/ic_action_discard" />
+              android:src="@drawable/discard_c" />
                    <ImageButton
               android:id="@+id/menu_edit_button"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:src="@drawable/ic_action_edit" />
+              android:src="@drawable/edit_c" />
               <ImageButton
               android:id="@+id/menu_context"
               android:layout_width="wrap_content"

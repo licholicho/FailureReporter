@@ -9,7 +9,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:stretchColumns="1"
-    android:shrinkColumns="0">
+    android:shrinkColumns="0"
+     android:background="#EFF8F5">
+    
+       <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#D8E9EC" >
+
+            <CheckBox
+                android:id="@+id/done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/done" />
+        </TableRow>
 
     <TableRow
         android:id="@+id/newtaskrow"
@@ -70,6 +83,24 @@
 
     </TableRow>
     
+     <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/edate_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/end_date" />
+
+            <DatePicker
+                android:id="@+id/end_datepicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left" >
+            </DatePicker>
+        </TableRow>
+    
       <TableRow
         android:id="@+id/newlocation"
         android:layout_width="match_parent"
@@ -125,6 +156,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/mybutt"
                     android:text="Current location" />
 
                 <Button
@@ -132,6 +164,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/mybutt"
                     android:text="By address" />
             </LinearLayout>
         </TableRow>
@@ -176,7 +209,18 @@
          
         </EditText>
         </TableRow>
+           <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
+            <TextView
+                android:id="@+id/photos_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:text="Photos"
+                android:textSize="20sp" />
+        </TableRow>
 
 
 

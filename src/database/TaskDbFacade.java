@@ -38,7 +38,7 @@ public class TaskDbFacade {
         v.put("e_date", t.getEndDateInString());
         if (!t.getPhotos().isEmpty()) {
         if (t.getPhotos().size() > 0)
-        v.put("photo_1", t.getPhotoInBytes(0));
+        	v.put("photo_1", t.getPhotoInBytes(0));
         if (t.getPhotos().size() > 1)
             v.put("photo_2", t.getPhotoInBytes(1));
         if (t.getPhotos().size() > 2)
@@ -63,11 +63,11 @@ public class TaskDbFacade {
         v.put("e_date", t.getEndDateInString());
         if (!t.getPhotos().isEmpty()) {
         if (t.getPhotos().size() > 0)
-        v.put("app_icon", t.getPhotoInBytes(0));
+        v.put("photo_1", t.getPhotoInBytes(0));
         if (t.getPhotos().size() > 1)
-            v.put("app_icon", t.getPhotoInBytes(1));
+            v.put("photo_2", t.getPhotoInBytes(1));
         if (t.getPhotos().size() > 2)
-            v.put("app_icon", t.getPhotoInBytes(2));
+            v.put("photo_3", t.getPhotoInBytes(2));
         }
         
         int rowsAffected = db.update(TaskDbHelper.TABLE_TASKS, v, "_id="
@@ -213,11 +213,11 @@ public class TaskDbFacade {
                 a.setBeginDate(cur.getString(8));
                 a.setEndDate(cur.getString(9));
                 if (cur.getBlob(10) != null)
-                	a.setPhoto(0, cur.getBlob(10));
+                	a.addPhoto(0, cur.getBlob(10));
                 if (cur.getBlob(11) != null)
-                	a.setPhoto(0, cur.getBlob(11));
+                	a.addPhoto(1, cur.getBlob(11));
                 if (cur.getBlob(12) != null)
-                	a.setPhoto(0, cur.getBlob(12));
+                	a.addPhoto(2, cur.getBlob(12));
                 	
                 list.add(a);
 

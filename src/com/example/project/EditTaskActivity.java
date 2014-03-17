@@ -3,7 +3,9 @@ package com.example.project;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
@@ -36,6 +38,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -75,34 +78,37 @@ public class EditTaskActivity extends Activity {
 	
 	protected static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
 	protected static final int BACK_FROM_OUTSIDE_APP = 101;
-	protected static final int STABLE_CHILD_COUNT = 19; 
+	protected static final int STABLE_CHILD_COUNT = 1; 
 	Uri imageUri;
 	private TextView photosTv;
 	List<byte[]> photos;
+	
+	String originalName = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_edit_task);
+		setContentView(R.layout.activity_add_task);
 		setupDbEnv();
 
-		myScrollView = (ScrollView) findViewById(R.id.scrollView2);
-		myTableLayout = (TableLayout) findViewById(R.id.tableLayout_edit);
-		title = (EditText) findViewById(R.id.e_title_et);
-		description = (EditText) findViewById(R.id.e_desc_et);
-		beginDate = (DatePicker) findViewById(R.id.e_begin_datepicker);
-		endDate = (DatePicker) findViewById(R.id.e_end_datepicker);
-		done = (CheckBox) findViewById(R.id.e_done);
-		addressEt = (EditText) findViewById(R.id.e_loc_et);
-		longitudeEt = (EditText) findViewById(R.id.e_long_et);
-		latitudeEt = (EditText) findViewById(R.id.e_lat_et);
-		getLocationButton = (Button) findViewById(R.id.e_get_loc_b);
-		getLocationByAddress = (Button) findViewById(R.id.e_get_loc_bn);
+		myScrollView = (ScrollView) findViewById(R.id.scrollView1);
+		myTableLayout = (TableLayout) findViewById(R.id.tableLayout_add);
+		title = (EditText) findViewById(R.id.title_et);
+		description = (EditText) findViewById(R.id.desc_et);
+		beginDate = (DatePicker) findViewById(R.id.begin_datepicker);
+		endDate = (DatePicker) findViewById(R.id.end_datepicker);
+		endDate.setMaxDate(new Date().getTime());
+		done = (CheckBox) findViewById(R.id.done);
+		addressEt = (EditText) findViewById(R.id.loc_et);
+		longitudeEt = (EditText) findViewById(R.id.long_et);
+		latitudeEt = (EditText) findViewById(R.id.lat_et);
+		getLocationButton = (Button) findViewById(R.id.get_loc_b);
+		getLocationByAddress = (Button) findViewById(R.id.get_loc_bn);
 		turnOffCalendar();
-		photosTv = (TextView) findViewById(R.id.e_photos_tv);
+		photosTv = (TextView) findViewById(R.id.photos_tv);
+		photos = new ArrayList<byte[]>();
 
 		if (savedInstanceState != null) {
-			Log.i("lala", "title " + savedInstanceState.getString("title"));
 			title.setText(savedInstanceState.getString("title"));
 			description.setText(savedInstanceState.getString("description"));
 			beginDate.init(savedInstanceState.getInt("byear"),
@@ -125,14 +131,18 @@ public class EditTaskActivity extends Activity {
 				}
 				
 				if(!photos.isEmpty()) {
+					photosTv.setVisibility(View.VISIBLE);
 					for(int i = 0; i < photos.size(); i++)
 						createPhotoRow(photos.get(i), i+1);
 				}
+				Log.i("koko","liczba dzieci "+myTableLayout.getChildCount());
+				
 		}
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			Task t = (Task)extras.getSerializable("task");
+			originalName = t.getTitle();
 			idToUpdate = t.getId();
 			title.setText(t.getTitle());
 			description.setText(t.getDescription());
@@ -397,10 +407,14 @@ public class EditTaskActivity extends Activity {
 		savedInstanceState.putString("lat", latitudeEt.getText().toString());
 		savedInstanceState.putString("long", longitudeEt.getText().toString());
 		savedInstanceState.putBoolean("done", done.isChecked());
+		for (int i = 0; i < photos.size(); i++)
+			savedInstanceState.putByteArray("photo"+i, photos.get(i));
 	}
 	
 	public boolean checkIfExists() {
-		return (dbHelper.findByTitle(title.getText().toString()).isEmpty()) ? false : true;
+		String newName = title.getText().toString();
+		if (newName.equals(originalName)) 	return false;
+		else return (dbHelper.findByTitle(newName).isEmpty()) ? false : true;
 	}
 	
 	class LocationThread extends Thread {
@@ -484,13 +498,13 @@ public class EditTaskActivity extends Activity {
 	
 	private void createPhotoRow(byte[] photoBytes, int n) {
 		final TableRow tr = new TableRow(this);
-		
+		LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(LinearLayout.HORIZONTAL);
 		Bitmap picture = BitmapFactory.decodeByteArray(photoBytes, 0, photoBytes.length);
         ImageView photo = new ImageView(this);
         photo.setPadding(5, 2, 5, 2);
         photo.setImageBitmap(picture);
         ImageButton imageDeleteButton = new ImageButton(this);
-     //   imageDeleteButton.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         imageDeleteButton.setBackgroundResource(R.drawable.ic_action_discard);
         imageDeleteButton.setOnClickListener(new OnClickListener() {
 			
@@ -502,6 +516,8 @@ public class EditTaskActivity extends Activity {
 				int id = tr.getId();
 				Log.i("koko","kliknelam "+id);
 				photos.remove(id-STABLE_CHILD_COUNT-1);
+				if(photos.isEmpty())
+					photosTv.setVisibility(View.GONE);
 				for (int i = id; i<= currentChildCount; i++) {
 					Log.i("koko","for "+i+ " ccc "+currentChildCount);
 					View view = myTableLayout.getChildAt(i-1);
@@ -516,9 +532,10 @@ public class EditTaskActivity extends Activity {
 				viewUp.requestFocus();
 			}
 		});
-        tr.addView(photo);
-        tr.addView(imageDeleteButton);
+        ll.addView(photo);
+        ll.addView(imageDeleteButton);
         tr.setId(STABLE_CHILD_COUNT+n);
+        tr.addView(ll);
         myTableLayout.addView(tr);
 	}
 
@@ -553,6 +570,8 @@ public class EditTaskActivity extends Activity {
 		        
 		        Log.i("koko","przed "+myTableLayout.getChildCount());
 		        final TableRow tr = new TableRow(this);
+		        LinearLayout ll = new LinearLayout(this);
+		        ll.setOrientation(LinearLayout.HORIZONTAL);
 		        ImageView photo = new ImageView(this);
 		        photo.setPadding(2, 2, 2, 2);
 		        photo.setImageBitmap(picture);
@@ -585,24 +604,12 @@ public class EditTaskActivity extends Activity {
 						viewUp.requestFocus();
 					}
 				});
-		        tr.addView(photo);
-		        tr.addView(imageDeleteButton);
+		        ll.addView(photo);
+		        ll.addView(imageDeleteButton);
 		        tr.setId(STABLE_CHILD_COUNT+photos.size());
+		        tr.addView(ll);
 		        myTableLayout.addView(tr);
-		      /*  if (photos.size()==3){
-	        	//	button_camera.setEnabled(false);
-	        		photo3.addView(photo);
-	        	} else if (photos.size()==2){
-	        		photo2.addView(photo);
-	        	} else if (photos.size()==1){
-	        		photo1.addView(photo);
-	        	} else {
-	        		Log.i("OLAG", "Pustki fotograficzne, a tak byæ nie powinno oO");
-	        	}*/
-		        
-		        
-		        //delete image
-		      //  this.getContentResolver().delete(data.getData(), null, null);
+
 			} else if (resultCode == RESULT_CANCELED) {
 				Toast.makeText(this, "Picture was not taken", Toast.LENGTH_SHORT).show();
 			}

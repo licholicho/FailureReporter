@@ -51,6 +51,7 @@ public class OngoingActivity extends Activity {
 		setupDbEnv();
 
 		tasks = dbHelper.listAll();
+		Log.i("start","pzeszlo");
 		taskLv = (ListView) findViewById(R.id.ongoing_menu);
 		//taskLv.setAdapter(new MenuAdapter(this, tasks));
 		BA = BluetoothAdapter.getDefaultAdapter();
@@ -59,6 +60,7 @@ public class OngoingActivity extends Activity {
 	 @Override
 	    protected void onStart() {
 	        super.onStart();
+	        Log.i("start","onstart");
 	        taskLv.setAdapter(new MenuAdapter(this, tasks));
 	    }
 	

@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import location.Location;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -215,6 +214,10 @@ public class Task implements Serializable {
 	
 	public void setPhoto(int i, byte[] photo) {
 		this.photos.set(i, photo);
+	}
+	
+	public void addPhoto(int i, byte[] photo) {
+		this.photos.add(i, photo);
 	}
 	
 	public Drawable getDrawable(int i) {

@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
@@ -31,12 +32,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -73,7 +74,7 @@ public class AddTaskActivity extends Activity {
 	//private Button button_camera;
 	protected static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
 	protected static final int BACK_FROM_OUTSIDE_APP = 101;
-	protected static final int STABLE_CHILD_COUNT = 15; 
+	protected static final int STABLE_CHILD_COUNT = 18; 
 	Uri imageUri;
 	private TextView photosTv;
 	List<byte[]> photos;
@@ -84,7 +85,9 @@ public class AddTaskActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_task);
 		setupDbEnv();
-
+		Log.i("ok","okoo");
+		hideUnused();
+		Log.i("ok","ok");
 		myScrollView = (ScrollView) findViewById(R.id.scrollView1);
 		myTableLayout = (TableLayout) findViewById(R.id.tableLayout_add);
 		title = (EditText) findViewById(R.id.title_et);
@@ -95,6 +98,7 @@ public class AddTaskActivity extends Activity {
 		latitudeEt = (EditText) findViewById(R.id.lat_et);
 		addressEt = (EditText) findViewById(R.id.loc_et);
 		beginDate = (DatePicker) findViewById(R.id.begin_datepicker);
+		beginDate.setMaxDate(new Date().getTime());
 		turnOffCalendar();
 		photosTv = (TextView) findViewById(R.id.photos_tv);
 		photos = new ArrayList<byte[]>();
@@ -119,6 +123,7 @@ public class AddTaskActivity extends Activity {
 			}
 			
 			if(!photos.isEmpty()) {
+				photosTv.setVisibility(View.VISIBLE);
 				for(int i = 0; i < photos.size(); i++)
 					createPhotoRow(photos.get(i), i+1);
 			}
@@ -444,7 +449,6 @@ public class AddTaskActivity extends Activity {
         photo.setPadding(5, 2, 5, 2);
         photo.setImageBitmap(picture);
         ImageButton imageDeleteButton = new ImageButton(this);
-     //   imageDeleteButton.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         imageDeleteButton.setBackgroundResource(R.drawable.ic_action_discard);
         imageDeleteButton.setOnClickListener(new OnClickListener() {
 			
@@ -472,8 +476,6 @@ public class AddTaskActivity extends Activity {
 		});
         ll.addView(photo);
         ll.addView(imageDeleteButton);
-       // tr.addView(photo);
-       // tr.addView(imageDeleteButton);
         tr.setId(STABLE_CHILD_COUNT+n);
         tr.addView(ll);
         myTableLayout.addView(tr);
@@ -570,6 +572,15 @@ public class AddTaskActivity extends Activity {
 			}
 		}
 
+	}
+	
+	private void hideUnused() {
+		TextView endDateTv = (TextView) findViewById(R.id.edate_tv);
+		endDateTv.setVisibility(View.GONE);
+		DatePicker endDate = (DatePicker)  findViewById(R.id.end_datepicker);
+		endDate.setVisibility(View.GONE);
+		CheckBox done = (CheckBox) findViewById(R.id.done);
+		done.setVisibility(View.GONE);
 	}
 
 }
