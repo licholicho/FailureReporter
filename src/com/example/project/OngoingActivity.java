@@ -42,6 +42,8 @@ public class OngoingActivity extends Activity {
 	public static final int MESSAGE_WRITE = 3;
 	public static final int MESSAGE_DEVICE_NAME = 4;
 	public static final int MESSAGE_TOAST = 5;
+	public static final String DEVICE_NAME = "device_name";
+	public static final String TOAST = "toast";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -320,7 +322,7 @@ public class OngoingActivity extends Activity {
 		mOutStringBuffer = new StringBuffer("");
 
 	}
-
+/*
 	private void sendMessage(String message) {
 		Log.i("jest", "poczatek send! " + message);
 		// Check that we're actually connected before trying anything
@@ -344,7 +346,7 @@ public class OngoingActivity extends Activity {
 			// mOutEditText.setText(mOutStringBuffer);
 		}
 	}
-
+*/
 	private void sendFailure(Task failure) {
 
 		Log.i("jest", "poczatek send failure!");

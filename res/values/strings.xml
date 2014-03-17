@@ -21,6 +21,13 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
+    <string name="address">Address</string>
+    <string name="lgt">Longitude</string>
+    <string name="ltt">Latitude</string>
+    <string name="location">Location</string>
+    <string name="current_loc">Get current location</string>
+    <string name="by_address">Get location by address</string>
+    <string name="photos">Photos</string>
     <string name="y_move">Yes, move it</string>
     <string name="n_delete">No, delete it</string>
     <string name="new_task">New Task</string>

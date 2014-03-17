@@ -1,9 +1,7 @@
 package com.example.project;
 
-import java.io.IOException;
 import java.util.List;
 
-import task.Serializer;
 import task.Task;
 import android.app.Activity;
 import android.app.AlertDialog;

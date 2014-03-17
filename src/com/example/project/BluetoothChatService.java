@@ -82,7 +82,7 @@ public class BluetoothChatService {
         mState = state;
 
         // Give the new state to the Handler so the UI Activity can update
-        mHandler.obtainMessage(MyActivity.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
+        mHandler.obtainMessage(OngoingActivity.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
     }
 
     /**
@@ -154,9 +154,9 @@ public class BluetoothChatService {
         mConnectedThread.start();
 
         // Send the name of the connected device back to the UI Activity
-        Message msg = mHandler.obtainMessage(MyActivity.MESSAGE_DEVICE_NAME);
+        Message msg = mHandler.obtainMessage(OngoingActivity.MESSAGE_DEVICE_NAME);
         Bundle bundle = new Bundle();
-        bundle.putString(MyActivity.DEVICE_NAME, device.getName());
+        bundle.putString(OngoingActivity.DEVICE_NAME, device.getName());
         msg.setData(bundle);
         mHandler.sendMessage(msg);
         Log.i("jest","connected");
@@ -198,9 +198,9 @@ public class BluetoothChatService {
         setState(STATE_LISTEN);
         Log.i("jest","failed");
         // Send a failure message back to the Activity
-        Message msg = mHandler.obtainMessage(MyActivity.MESSAGE_TOAST);
+        Message msg = mHandler.obtainMessage(OngoingActivity.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
-        bundle.putString(MyActivity.TOAST, "Unable to connect device");
+        bundle.putString(OngoingActivity.TOAST, "Unable to connect device");
         msg.setData(bundle);
         mHandler.sendMessage(msg);
     }
@@ -212,9 +212,9 @@ public class BluetoothChatService {
         setState(STATE_LISTEN);
         Log.i("jest","lost");
         // Send a failure message back to the Activity
-        Message msg = mHandler.obtainMessage(MyActivity.MESSAGE_TOAST);
+        Message msg = mHandler.obtainMessage(OngoingActivity.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
-        bundle.putString(MyActivity.TOAST, "Device connection was lost");
+        bundle.putString(OngoingActivity.TOAST, "Device connection was lost");
         msg.setData(bundle);
         mHandler.sendMessage(msg);
     }
@@ -397,7 +397,7 @@ public class BluetoothChatService {
                     bytes = mmInStream.read(buffer);
 
                     // Send the obtained bytes to the UI Activity
-                    mHandler.obtainMessage(MyActivity.MESSAGE_READ, bytes, -1, buffer)
+                    mHandler.obtainMessage(OngoingActivity.MESSAGE_READ, bytes, -1, buffer)
                             .sendToTarget();
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
@@ -416,7 +416,7 @@ public class BluetoothChatService {
                 mmOutStream.write(buffer);
 
                 // Share the sent message back to the UI Activity
-                mHandler.obtainMessage(MyActivity.MESSAGE_WRITE, -1, -1, buffer)
+                mHandler.obtainMessage(OngoingActivity.MESSAGE_WRITE, -1, -1, buffer)
                         .sendToTarget();
             } catch (IOException e) {
                 Log.e(TAG, "Exception during write", e);

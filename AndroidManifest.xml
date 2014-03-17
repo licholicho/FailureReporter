@@ -72,10 +72,6 @@
             android:label="@string/select_device"
             android:theme="@android:style/Theme.Dialog" >
         </activity>
-        <activity
-            android:name="com.example.project.GeoCoderActivity"
-            android:label="@string/title_activity_edit_task" >
-        </activity>
     </application>
 
 </manifest>

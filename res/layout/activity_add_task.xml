@@ -144,7 +144,7 @@
                 android:id="@+id/adres"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Address" />
+                android:text="@string/address" />
         </TableRow>
 
         <TableRow
@@ -175,7 +175,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/mybutt"
-                    android:text="Get current location" />
+                    android:text="@string/current_loc" />
 
                 <Button
                     android:id="@+id/get_loc_bn"
@@ -183,7 +183,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                      android:background="@drawable/mybutt"
-                    android:text="Get location by name" />
+                     android:textSize="12sp"
+                    android:text="@string/by_address" />
             </LinearLayout>
         </TableRow>
         
@@ -195,7 +196,7 @@
                 android:id="@+id/long_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Longitude" />
+                android:text="@string/lgt" />
         </TableRow>
 
         <TableRow
@@ -219,7 +220,7 @@
                 android:id="@+id/lat_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Latitude" />
+                android:text="@string/ltt" />
         </TableRow>
 
         <TableRow
@@ -243,7 +244,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="invisible"
-                android:text="Photos"
+                android:text="@string/photos"
                 android:textSize="20sp" />
         </TableRow>
   

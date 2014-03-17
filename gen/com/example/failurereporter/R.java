@@ -241,114 +241,75 @@ containing a value of this type.
         public static final int unchecked=0x7f020030;
     }
     public static final class id {
-        public static final int action_camera=0x7f05004f;
-        public static final int action_cancel=0x7f050051;
-        public static final int action_save=0x7f050050;
-        public static final int action_settings=0x7f05004e;
-        public static final int add_new=0x7f050039;
-        public static final int add_new_button=0x7f05003a;
-        public static final int address=0x7f050036;
+        public static final int action_camera=0x7f05002e;
+        public static final int action_cancel=0x7f050030;
+        public static final int action_save=0x7f05002f;
+        public static final int action_settings=0x7f05002d;
         public static final int adres=0x7f050014;
         public static final int bdate_tv=0x7f05000d;
         public static final int begin_datepicker=0x7f05000e;
         public static final int butt=0x7f05001e;
-        public static final int button1=0x7f05003e;
-        public static final int button2=0x7f05003f;
-        public static final int button_scan=0x7f050045;
-        public static final int connect=0x7f050059;
+        public static final int button_scan=0x7f050024;
+        public static final int connect=0x7f050038;
         public static final int desc_et=0x7f05000c;
         public static final int desc_tv=0x7f05000b;
         public static final int done=0x7f050007;
-        public static final int done_check=0x7f05004d;
-        public static final int e_bdate_tv=0x7f050026;
-        public static final int e_begin_datepicker=0x7f050027;
-        public static final int e_desc_et=0x7f050024;
-        public static final int e_desc_tv=0x7f050023;
-        public static final int e_done=0x7f050033;
-        public static final int e_edate_tv=0x7f050028;
-        public static final int e_end_datepicker=0x7f050029;
-        public static final int e_get_loc_b=0x7f05002c;
-        public static final int e_get_loc_bn=0x7f05002d;
-        public static final int e_lat_et=0x7f050031;
-        public static final int e_lat_tv=0x7f050030;
-        public static final int e_loc_et=0x7f05002b;
-        public static final int e_loc_tv=0x7f05002a;
-        public static final int e_location_name=0x7f050034;
-        public static final int e_long_et=0x7f05002f;
-        public static final int e_long_tv=0x7f05002e;
-        public static final int e_photos_tv=0x7f050032;
-        public static final int e_title_et=0x7f050022;
-        public static final int e_title_tv=0x7f050021;
+        public static final int done_check=0x7f05002c;
         public static final int edate_tv=0x7f05000f;
         public static final int end_datepicker=0x7f050010;
-        public static final int et=0x7f050037;
         public static final int get_loc=0x7f050016;
         public static final int get_loc_b=0x7f050017;
         public static final int get_loc_bn=0x7f050018;
-        public static final int history=0x7f05003d;
         public static final int hybrid=0x7f050004;
-        public static final int item_title=0x7f050048;
+        public static final int item_title=0x7f050027;
         public static final int lat_et=0x7f05001c;
         public static final int lat_tv=0x7f05001b;
-        public static final int list_menu=0x7f050046;
+        public static final int list_menu=0x7f050025;
         public static final int loc_et=0x7f050015;
         public static final int loc_tv=0x7f050012;
-        public static final int location=0x7f050038;
         public static final int location_name=0x7f050013;
         public static final int long_et=0x7f05001a;
         public static final int long_tv=0x7f050019;
-        public static final int menu_add=0x7f05005a;
-        public static final int menu_bt=0x7f050057;
-        public static final int menu_context=0x7f05004c;
-        public static final int menu_delete_all=0x7f050052;
-        public static final int menu_delete_button=0x7f05004a;
-        public static final int menu_edit_button=0x7f05004b;
-        public static final int menu_sort=0x7f050053;
-        public static final int new_devices=0x7f050044;
-        public static final int newdate=0x7f050025;
+        public static final int menu_add=0x7f050039;
+        public static final int menu_bt=0x7f050036;
+        public static final int menu_context=0x7f05002b;
+        public static final int menu_delete_all=0x7f050031;
+        public static final int menu_delete_button=0x7f050029;
+        public static final int menu_edit_button=0x7f05002a;
+        public static final int menu_sort=0x7f050032;
+        public static final int new_devices=0x7f050023;
         public static final int newlocation=0x7f050011;
         public static final int newtaskrow=0x7f050008;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int on_off=0x7f050058;
-        public static final int ongoing=0x7f05003b;
-        public static final int ongoing_button=0x7f05003c;
-        public static final int ongoing_menu=0x7f050040;
-        public static final int paired_devices=0x7f050042;
+        public static final int on_off=0x7f050037;
+        public static final int ongoing_menu=0x7f05001f;
+        public static final int paired_devices=0x7f050021;
         public static final int photos_tv=0x7f05001d;
         public static final int satellite=0x7f050002;
         public static final int scrollView1=0x7f050005;
-        public static final int scrollView2=0x7f05001f;
-        public static final int sort_bdate=0x7f050055;
-        public static final int sort_edate=0x7f050056;
-        public static final int sort_title=0x7f050054;
+        public static final int sort_bdate=0x7f050034;
+        public static final int sort_edate=0x7f050035;
+        public static final int sort_title=0x7f050033;
         public static final int tableLayout_add=0x7f050006;
-        public static final int tableLayout_edit=0x7f050020;
         public static final int terrain=0x7f050003;
-        public static final int title=0x7f050035;
         public static final int title_et=0x7f05000a;
-        public static final int title_new_devices=0x7f050043;
-        public static final int title_paired_devices=0x7f050041;
+        public static final int title_new_devices=0x7f050022;
+        public static final int title_paired_devices=0x7f050020;
         public static final int title_tv=0x7f050009;
-        public static final int tr1=0x7f050047;
-        public static final int tr2=0x7f050049;
+        public static final int tr1=0x7f050026;
+        public static final int tr2=0x7f050028;
     }
     public static final class integer {
         public static final int google_play_services_version=0x7f070000;
     }
     public static final class layout {
         public static final int activity_add_task=0x7f030000;
-        public static final int activity_edit_task=0x7f030001;
-        public static final int activity_geocoder=0x7f030002;
-        public static final int activity_history=0x7f030003;
-        public static final int activity_main=0x7f030004;
-        public static final int activity_my=0x7f030005;
-        public static final int activity_ongoing=0x7f030006;
-        public static final int device_list=0x7f030007;
-        public static final int device_name=0x7f030008;
-        public static final int menu=0x7f030009;
-        public static final int menu_item=0x7f03000a;
-        public static final int past_item=0x7f03000b;
+        public static final int activity_ongoing=0x7f030001;
+        public static final int device_list=0x7f030002;
+        public static final int device_name=0x7f030003;
+        public static final int menu=0x7f030004;
+        public static final int menu_item=0x7f030005;
     }
     public static final class menu {
         public static final int add_task=0x7f0a0000;
@@ -360,6 +321,7 @@ containing a value of this type.
     public static final class string {
         public static final int action_settings=0x7f06001b;
         public static final int add_str=0x7f06001d;
+        public static final int address=0x7f06002e;
         public static final int app_name=0x7f06001a;
         /**   Title for notification shown when GooglePlayServices needs to be
         enabled for a application to work. [CHAR LIMIT=70] 
@@ -384,9 +346,10 @@ containing a value of this type.
         [CHAR LIMIT=70] 
          */
         public static final int auth_client_using_bad_version_title=0x7f060014;
-        public static final int bluetooth=0x7f06003a;
-        public static final int bt_not_enabled_leaving=0x7f06003d;
-        public static final int button_scan=0x7f060047;
+        public static final int bluetooth=0x7f060040;
+        public static final int bt_not_enabled_leaving=0x7f060043;
+        public static final int button_scan=0x7f06004d;
+        public static final int by_address=0x7f060032;
         public static final int cancel=0x7f06002b;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
@@ -459,49 +422,53 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f060013;
+        public static final int current_loc=0x7f060031;
         public static final int current_location=0x7f060026;
         public static final int delete=0x7f06002c;
         public static final int description=0x7f060024;
-        public static final int done=0x7f060034;
-        public static final int email=0x7f060037;
-        public static final int end_date=0x7f060033;
-        public static final int export=0x7f060039;
+        public static final int done=0x7f06003a;
+        public static final int email=0x7f06003d;
+        public static final int end_date=0x7f060039;
+        public static final int export=0x7f06003f;
         public static final int hello_world=0x7f06001c;
         public static final int history_str=0x7f06001f;
+        public static final int lgt=0x7f06002f;
         public static final int location=0x7f060025;
-        public static final int n_delete=0x7f06002f;
-        public static final int new_task=0x7f060030;
-        public static final int none_found=0x7f060044;
-        public static final int none_paired=0x7f060043;
-        public static final int not_connected=0x7f06003c;
+        public static final int ltt=0x7f060030;
+        public static final int n_delete=0x7f060035;
+        public static final int new_task=0x7f060036;
+        public static final int none_found=0x7f06004a;
+        public static final int none_paired=0x7f060049;
+        public static final int not_connected=0x7f060042;
         public static final int ongoing_str=0x7f06001e;
         public static final int past_or_delete=0x7f06002a;
+        public static final int photos=0x7f060033;
         public static final int reminder=0x7f060027;
-        public static final int remove_all=0x7f060031;
+        public static final int remove_all=0x7f060037;
         public static final int save=0x7f06002d;
         /**  DeviceListActivity 
          */
-        public static final int scanning=0x7f060041;
-        public static final int select_device=0x7f060042;
+        public static final int scanning=0x7f060047;
+        public static final int select_device=0x7f060048;
         /**  BluetoothChat 
          */
-        public static final int send=0x7f06003b;
-        public static final int sms=0x7f060036;
-        public static final int sort=0x7f060038;
-        public static final int start_date=0x7f060032;
-        public static final int status=0x7f060035;
+        public static final int send=0x7f060041;
+        public static final int sms=0x7f06003c;
+        public static final int sort=0x7f06003e;
+        public static final int start_date=0x7f060038;
+        public static final int status=0x7f06003b;
         public static final int sure_to_delete=0x7f060029;
         public static final int title=0x7f060028;
         public static final int title_activity_add_task=0x7f060020;
         public static final int title_activity_edit_task=0x7f060023;
         public static final int title_activity_history=0x7f060022;
         public static final int title_activity_ongoing=0x7f060021;
-        public static final int title_connected_to=0x7f06003f;
-        public static final int title_connecting=0x7f06003e;
-        public static final int title_not_connected=0x7f060040;
-        public static final int title_other_devices=0x7f060046;
-        public static final int title_paired_devices=0x7f060045;
-        public static final int y_move=0x7f06002e;
+        public static final int title_connected_to=0x7f060045;
+        public static final int title_connecting=0x7f060044;
+        public static final int title_not_connected=0x7f060046;
+        public static final int title_other_devices=0x7f06004c;
+        public static final int title_paired_devices=0x7f06004b;
+        public static final int y_move=0x7f060034;
     }
     public static final class style {
         /** 
