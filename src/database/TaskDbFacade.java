@@ -70,8 +70,10 @@ public class TaskDbFacade {
             v.put("photo_3", t.getPhotoInBytes(2));
         }
         
-        int rowsAffected = db.update(TaskDbHelper.TABLE_TASKS, v, "_id="
-                + t.getId(), null);
+        // w tym przypadku id mog¹ siê ró¿niæ, dlatego wykorzystam pole title
+      //  int rowsAffected = db.update(TaskDbHelper.TABLE_TASKS, v, "_id="
+        //        + t.getId(), null);
+        int rowsAffected = db.update(TaskDbHelper.TABLE_TASKS, v, "title="+t.getTitle(), null);
 
         return (rowsAffected == 1);
     }

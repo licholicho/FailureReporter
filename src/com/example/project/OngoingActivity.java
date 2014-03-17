@@ -37,6 +37,7 @@ public class OngoingActivity extends Activity {
 	private static final int REQUEST_ENABLE_BT = 2;
 	private BluetoothChatService mChatService = null;
 	private StringBuffer mOutStringBuffer;
+	private String mConnectedDeviceName;
 	public static final int MESSAGE_STATE_CHANGE = 1;
 	public static final int MESSAGE_READ = 2;
 	public static final int MESSAGE_WRITE = 3;
@@ -53,20 +54,18 @@ public class OngoingActivity extends Activity {
 		setupDbEnv();
 
 		tasks = dbHelper.listAll();
-		Log.i("start","pzeszlo");
+		Log.i("start", "pzeszlo");
 		taskLv = (ListView) findViewById(R.id.ongoing_menu);
-		//taskLv.setAdapter(new MenuAdapter(this, tasks));
+		// taskLv.setAdapter(new MenuAdapter(this, tasks));
 		BA = BluetoothAdapter.getDefaultAdapter();
 	}
-	
-	 @Override
-	    protected void onStart() {
-	        super.onStart();
-	        Log.i("start","onstart");
-	        taskLv.setAdapter(new MenuAdapter(this, tasks));
-	    }
-	
-	
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		Log.i("start", "onstart");
+		taskLv.setAdapter(new MenuAdapter(this, tasks));
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -164,12 +163,13 @@ public class OngoingActivity extends Activity {
 			sendEmail();
 			break;
 		case CONTEXT_EXPORT: {
-			if (BA.isEnabled() && (mChatService.getState() == BluetoothChatService.STATE_CONNECTED)) {
+			if (BA.isEnabled()
+					&& (mChatService.getState() == BluetoothChatService.STATE_CONNECTED)) {
 				Log.i("jest", "wysylam");
-				//sendMessage("lololo");
+				// sendMessage("lololo");
 				sendFailure(t);
 			} else {
-				Log.i("jest","problem z polaczeniem");
+				Log.i("jest", "problem z polaczeniem");
 			}
 		}
 			break;
@@ -275,11 +275,41 @@ public class OngoingActivity extends Activity {
 		public void handleMessage(Message msg) {
 			Log.i("jest", "handler");
 			switch (msg.what) {
+			case MESSAGE_STATE_CHANGE:
+				switch (msg.arg1) {
+				case BluetoothChatService.STATE_CONNECTED:
+					Toast.makeText(OngoingActivity.this,
+							R.string.title_connected_to, Toast.LENGTH_LONG)
+							.show();
+					break;
+				case BluetoothChatService.STATE_CONNECTING:
+					Toast.makeText(OngoingActivity.this,
+							R.string.title_connecting, Toast.LENGTH_LONG)
+							.show();
+					break;
+				case BluetoothChatService.STATE_LISTEN:
+				case BluetoothChatService.STATE_NONE:
+					Toast.makeText(OngoingActivity.this,
+							R.string.title_not_connected, Toast.LENGTH_LONG)
+							.show();
+					break;
+				}
+				break;
+			case MESSAGE_DEVICE_NAME:
+				// save the connected device's name
+				mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
+				Toast.makeText(getApplicationContext(),
+						"Connected to " + mConnectedDeviceName,
+						Toast.LENGTH_SHORT).show();
+				break;
 			case MESSAGE_WRITE:
 				byte[] writeBuf = (byte[]) msg.obj;
 				// construct a string from the buffer
-				/*String writeMessage = new String(writeBuf);
-				Toast.makeText(OngoingActivity.this, "w " + writeMessage, Toast.LENGTH_SHORT).show();*/
+				/*
+				 * String writeMessage = new String(writeBuf);
+				 * Toast.makeText(OngoingActivity.this, "w " + writeMessage,
+				 * Toast.LENGTH_SHORT).show();
+				 */
 				Log.i("jest", "write ");
 				break;
 			case MESSAGE_READ:
@@ -295,17 +325,28 @@ public class OngoingActivity extends Activity {
 					e.printStackTrace();
 				}
 				// construct a string from the valid bytes in the buffer
-				String readMessage = t.getTitle();//new String(readBuf, 0, msg.arg1);
+				String readMessage = t.getTitle();// new String(readBuf, 0,
+													// msg.arg1);
 				if (!dbHelper.findByTitle(t.getTitle()).isEmpty()) {
+					Log.i("db","znaleziono "+t.getTitle());
+					Toast.makeText(OngoingActivity.this, "znaleziono "+t.getTitle(),
+							Toast.LENGTH_SHORT).show();
 					Task found = dbHelper.findByTitle(t.getTitle()).get(0);
 					found = t;
+					Toast.makeText(OngoingActivity.this, "nowe "+found.getDescription(),
+							Toast.LENGTH_SHORT).show();
 					dbHelper.update(found);
-					taskLv.setAdapter(new MenuAdapter(OngoingActivity.this, tasks));
+					taskLv.setAdapter(new MenuAdapter(OngoingActivity.this,
+							tasks));
 				} else {
+					Log.i("db","nie znaleziono "+t.getTitle());
+					Toast.makeText(OngoingActivity.this, "nie znaleziono "+t.getTitle(),
+							Toast.LENGTH_SHORT).show();
 					dbHelper.insert(t);
-					taskLv.setAdapter(new MenuAdapter(OngoingActivity.this, tasks));
+					taskLv.setAdapter(new MenuAdapter(OngoingActivity.this,
+							tasks));
 				}
-				
+
 				Toast.makeText(OngoingActivity.this, "r " + readMessage,
 						Toast.LENGTH_SHORT).show();
 				Log.i("jest", "read " + readMessage);
@@ -322,31 +363,24 @@ public class OngoingActivity extends Activity {
 		mOutStringBuffer = new StringBuffer("");
 
 	}
-/*
-	private void sendMessage(String message) {
-		Log.i("jest", "poczatek send! " + message);
-		// Check that we're actually connected before trying anything
-		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
-			Toast.makeText(this, "not", Toast.LENGTH_SHORT).show();
-			Log.i("jest", "zleeeeeee");
-			return;
-		}
 
-		// Check that there's actually something to send
-		if (message.length() > 0) {
-			Log.i("jest", "dopszeeeeee");
-			// Get the message bytes and tell the BluetoothChatService to write
-			byte[] send = message.getBytes();
-
-			Toast.makeText(this, "send " + message, Toast.LENGTH_SHORT).show();
-			mChatService.write(send);
-
-			mOutStringBuffer.setLength(0);
-			// Reset out string buffer to zero and clear the edit text field
-			// mOutEditText.setText(mOutStringBuffer);
-		}
-	}
-*/
+	/*
+	 * private void sendMessage(String message) { Log.i("jest",
+	 * "poczatek send! " + message); // Check that we're actually connected
+	 * before trying anything if (mChatService.getState() !=
+	 * BluetoothChatService.STATE_CONNECTED) { Toast.makeText(this, "not",
+	 * Toast.LENGTH_SHORT).show(); Log.i("jest", "zleeeeeee"); return; }
+	 * 
+	 * // Check that there's actually something to send if (message.length() >
+	 * 0) { Log.i("jest", "dopszeeeeee"); // Get the message bytes and tell the
+	 * BluetoothChatService to write byte[] send = message.getBytes();
+	 * 
+	 * Toast.makeText(this, "send " + message, Toast.LENGTH_SHORT).show();
+	 * mChatService.write(send);
+	 * 
+	 * mOutStringBuffer.setLength(0); // Reset out string buffer to zero and
+	 * clear the edit text field // mOutEditText.setText(mOutStringBuffer); } }
+	 */
 	private void sendFailure(Task failure) {
 
 		Log.i("jest", "poczatek send failure!");
@@ -355,7 +389,7 @@ public class OngoingActivity extends Activity {
 			return;
 		}
 		if (failure != null) {
-			Log.i("jest", "send failure dobrze "+failure.getTitle());
+			Log.i("jest", "send failure dobrze " + failure.getTitle());
 			byte[] send = null;
 			try {
 				send = Serializer.serialize(failure);
@@ -370,6 +404,5 @@ public class OngoingActivity extends Activity {
 			// mOutEditText.setText(mOutStringBuffer);
 		}
 	}
-	
-	
+
 }
