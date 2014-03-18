@@ -3,8 +3,6 @@ package com.example.project;
 import java.io.IOException;
 import java.util.List;
 
-import task.Serializer;
-import task.Task;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -22,15 +20,17 @@ import android.widget.Toast;
 
 import com.example.failurereporter.R;
 
-import database.TaskDbFacade;
-import database.TaskDbHelper;
+import database.FailureDbFacade;
+import database.FailureDbHelper;
+import failure.Failure;
+import failure.Serializer;
 
 public class OngoingActivity extends Activity {
 
-	private ListView taskLv;
-	private List<Task> tasks;
-	private TaskDbHelper dbOpenHelper = null;
-	public static TaskDbFacade dbHelper = null;
+	private ListView failureLv;
+	private List<Failure> reports;
+	private FailureDbHelper dbOpenHelper = null;
+	public static FailureDbFacade dbHelper = null;
 	private static int current = -1;
 	private BluetoothAdapter BA;
 	private static final int REQUEST_CONNECT_DEVICE = 1;
@@ -53,10 +53,9 @@ public class OngoingActivity extends Activity {
 
 		setupDbEnv();
 
-		tasks = dbHelper.listAll();
+		reports = dbHelper.listAll();
 		Log.i("start", "pzeszlo");
-		taskLv = (ListView) findViewById(R.id.ongoing_menu);
-		// taskLv.setAdapter(new MenuAdapter(this, tasks));
+		failureLv = (ListView) findViewById(R.id.ongoing_menu);
 		BA = BluetoothAdapter.getDefaultAdapter();
 	}
 
@@ -64,7 +63,7 @@ public class OngoingActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 		Log.i("start", "onstart");
-		taskLv.setAdapter(new MenuAdapter(this, tasks));
+		failureLv.setAdapter(new MenuAdapter(this, reports));
 	}
 
 	@Override
@@ -91,7 +90,7 @@ public class OngoingActivity extends Activity {
 			}
 		}
 		if (item.getItemId() == R.id.menu_add) {
-			Intent i = new Intent(this, AddTaskActivity.class);
+			Intent i = new Intent(this, AddFailureActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(i);
 		}
@@ -107,10 +106,10 @@ public class OngoingActivity extends Activity {
 	private void setupDbEnv() {
 		Log.i("topics.database", "setup!");
 		if (dbOpenHelper == null) {
-			dbOpenHelper = new TaskDbHelper(this);
+			dbOpenHelper = new FailureDbHelper(this);
 		}
 		if (dbHelper == null) {
-			dbHelper = new TaskDbFacade(dbOpenHelper.getWritableDatabase());
+			dbHelper = new FailureDbFacade(dbOpenHelper.getWritableDatabase());
 		}
 	}
 
@@ -123,13 +122,13 @@ public class OngoingActivity extends Activity {
 	}
 
 	public void sortByTitle() {
-		tasks = dbHelper.listAll();
-		taskLv.setAdapter(new MenuAdapter(this, tasks));
+		reports = dbHelper.listAll();
+		failureLv.setAdapter(new MenuAdapter(this, reports));
 	}
 
 	public void sortByBdate() {
-		tasks = dbHelper.listAllSortedBy("b_date", 0);
-		taskLv.setAdapter(new MenuAdapter(this, tasks));
+		reports = dbHelper.listAllSortedBy("b_date", 0);
+		failureLv.setAdapter(new MenuAdapter(this, reports));
 	}
 
 	public static void setCurrent(int i) {
@@ -154,7 +153,7 @@ public class OngoingActivity extends Activity {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
-		Task t = tasks.get(current);
+		Failure t = reports.get(current);
 		switch (item.getItemId()) {
 		case CONTEXT_SMS:
 			sendSms();
@@ -181,12 +180,12 @@ public class OngoingActivity extends Activity {
 	private void sendSms() {
 		StringBuilder body = new StringBuilder();
 		body.append("NEW UNSOLVED FAILURE!").append("\n");
-		body.append(tasks.get(current).getTitle()).append("\n");
-		body.append(tasks.get(current).getDescription()).append("\n");
+		body.append(reports.get(current).getTitle()).append("\n");
+		body.append(reports.get(current).getDescription()).append("\n");
 		body.append("Notification date: ").append(
-				tasks.get(current).getBeginDateInString());
+				reports.get(current).getBeginDateInString());
 		body.append("Solution date: ").append(
-				tasks.get(current).getEndDateInString());
+				reports.get(current).getEndDateInString());
 		Intent sendSms = new Intent(Intent.ACTION_VIEW);
 		sendSms.putExtra("sms_body", body.toString());
 		sendSms.setType("vnd.android-dir/mms-sms");
@@ -196,13 +195,13 @@ public class OngoingActivity extends Activity {
 	private void sendEmail() {
 		StringBuilder body = new StringBuilder();
 		body.append("NEW UNSOLVED FAILURE!").append("\n");
-		body.append(tasks.get(current).getTitle()).append("\n");
-		body.append(tasks.get(current).getDescription()).append("\n");
+		body.append(reports.get(current).getTitle()).append("\n");
+		body.append(reports.get(current).getDescription()).append("\n");
 		body.append("Notification date: ")
-				.append(tasks.get(current).getBeginDateInString()).append("\n");
-		if (tasks.get(current).done() == 1)
+				.append(reports.get(current).getBeginDateInString()).append("\n");
+		if (reports.get(current).done() == 1)
 			body.append("Solution date: ").append(
-					tasks.get(current).getEndDateInString());
+					reports.get(current).getEndDateInString());
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("message/rfc822");
 		i.putExtra(Intent.EXTRA_EMAIL, "");
@@ -314,9 +313,9 @@ public class OngoingActivity extends Activity {
 				break;
 			case MESSAGE_READ:
 				byte[] readBuf = (byte[]) msg.obj;
-				Task t = null;
+				Failure t = null;
 				try {
-					t = (Task) Serializer.deserialize(readBuf);
+					t = (Failure) Serializer.deserialize(readBuf);
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -331,20 +330,24 @@ public class OngoingActivity extends Activity {
 					Log.i("db","znaleziono "+t.getTitle());
 					Toast.makeText(OngoingActivity.this, "znaleziono "+t.getTitle(),
 							Toast.LENGTH_SHORT).show();
-					Task found = dbHelper.findByTitle(t.getTitle()).get(0);
+					Failure found = dbHelper.findByTitle(t.getTitle()).get(0);
+					long originalId = found.getId();
 					found = t;
+					found.setId(originalId);
 					Toast.makeText(OngoingActivity.this, "nowe "+found.getDescription(),
 							Toast.LENGTH_SHORT).show();
 					dbHelper.update(found);
-					taskLv.setAdapter(new MenuAdapter(OngoingActivity.this,
-							tasks));
+					reports = dbHelper.listAll();
+					failureLv.setAdapter(new MenuAdapter(OngoingActivity.this,
+							reports));
 				} else {
 					Log.i("db","nie znaleziono "+t.getTitle());
 					Toast.makeText(OngoingActivity.this, "nie znaleziono "+t.getTitle(),
 							Toast.LENGTH_SHORT).show();
 					dbHelper.insert(t);
-					taskLv.setAdapter(new MenuAdapter(OngoingActivity.this,
-							tasks));
+					reports = dbHelper.listAll();
+					failureLv.setAdapter(new MenuAdapter(OngoingActivity.this,
+							reports));
 				}
 
 				Toast.makeText(OngoingActivity.this, "r " + readMessage,
@@ -381,7 +384,7 @@ public class OngoingActivity extends Activity {
 	 * mOutStringBuffer.setLength(0); // Reset out string buffer to zero and
 	 * clear the edit text field // mOutEditText.setText(mOutStringBuffer); } }
 	 */
-	private void sendFailure(Task failure) {
+	private void sendFailure(Failure failure) {
 
 		Log.i("jest", "poczatek send failure!");
 		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {

@@ -2,7 +2,6 @@ package com.example.project;
 
 import java.util.List;
 
-import task.Task;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,12 +20,14 @@ import android.widget.TextView;
 
 import com.example.failurereporter.R;
 
+import failure.Failure;
+
 public class MenuAdapter extends BaseAdapter{
 
-	List<Task> list;
+	List<Failure> list;
 	Activity context;
 
-	public MenuAdapter(Activity context, List<Task> list) {
+	public MenuAdapter(Activity context, List<Failure> list) {
 		super();
 		this.context = context;
 		this.list = list;
@@ -67,9 +68,9 @@ public class MenuAdapter extends BaseAdapter{
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		final Task task = list.get(position);
+		final Failure f = list.get(position);
 		final int pos = position;
-		holder.title.setText(task.getTitle());
+		holder.title.setText(f.getTitle());
 		holder.deleteButton.setOnClickListener(new OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
@@ -78,7 +79,7 @@ public class MenuAdapter extends BaseAdapter{
 	        	// Add the buttons
 	        	builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
 	        	           public void onClick(DialogInterface dialog, int id) {
-	        	        	   OngoingActivity.dbHelper.delete(task.getId());
+	        	        	   OngoingActivity.dbHelper.delete(f.getId());
 	        	        	   refresh(pos);
 	        	           }
 	        	       });
@@ -99,8 +100,8 @@ public class MenuAdapter extends BaseAdapter{
 	        public void onClick(View v) {
 	        	Log.i("ongoing","edit!");
 	        	Intent i = new Intent();
-	        	i.setClass(context, EditTaskActivity.class);
-	        	i.putExtra("task", task);
+	        	i.setClass(context, EditFailureActivity.class);
+	        	i.putExtra("failure", f);
 	        	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	        	context.startActivity(i);
 	        }
@@ -119,14 +120,14 @@ public class MenuAdapter extends BaseAdapter{
 		        	// Add the buttons
 		        	builder.setPositiveButton(R.string.y_move, new DialogInterface.OnClickListener() {
 		        	           public void onClick(DialogInterface dialog, int id) {
-		        	        	   task.setDone(1);
-		        	        	   OngoingActivity.dbHelper.update(task);
+		        	        	   f.setDone(1);
+		        	        	   OngoingActivity.dbHelper.update(f);
 		        	        	   refresh(pos);
 		        	           }
 		        	       });
 		        	builder.setNeutralButton(R.string.n_delete, new DialogInterface.OnClickListener() {
 	        	           public void onClick(DialogInterface dialog, int id) {
-	        	        	   OngoingActivity.dbHelper.delete(task.getId()); 
+	        	        	   OngoingActivity.dbHelper.delete(f.getId()); 
 	        	        	   refresh(pos);
 	        	           }
 	        	       });

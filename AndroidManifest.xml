@@ -51,7 +51,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.project.AddTaskActivity"
+            android:name="com.example.project.AddFailureActivity"
             android:label="@string/title_activity_add_task" >
         </activity>
         <activity
@@ -63,7 +63,7 @@
             android:label="@string/title_activity_history" >
         </activity>
         <activity
-            android:name="com.example.project.EditTaskActivity"
+            android:name="com.example.project.EditFailureActivity"
             android:label="@string/title_activity_edit_task" >
         </activity>
         <activity

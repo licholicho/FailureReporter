@@ -2,7 +2,6 @@ package com.example.project;
 
 import java.util.List;
 
-import task.Task;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,15 +12,16 @@ import android.widget.ListView;
 
 import com.example.failurereporter.R;
 
-import database.TaskDbFacade;
-import database.TaskDbHelper;
+import database.FailureDbFacade;
+import database.FailureDbHelper;
+import failure.Failure;
 
 public class HistoryActivity extends Activity {
 
-	private ListView taskLv;
-	private List<Task> tasks;
-	private TaskDbHelper dbOpenHelper = null;
-	public static TaskDbFacade dbHelper = null;
+	private ListView failureLv;
+	private List<Failure> reports;
+	private FailureDbHelper dbOpenHelper = null;
+	public static FailureDbFacade dbHelper = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +29,9 @@ public class HistoryActivity extends Activity {
 		setContentView(R.layout.activity_ongoing);
 		setupDbEnv();
 
-		tasks = dbHelper.listAllDone();
-		taskLv = (ListView) findViewById(R.id.ongoing_menu);
-		taskLv.setAdapter(new MenuAdapter(this, tasks));
+		reports = dbHelper.listAllDone();
+		failureLv = (ListView) findViewById(R.id.ongoing_menu);
+		failureLv.setAdapter(new MenuAdapter(this, reports));
 	}
 
 	@Override
@@ -59,10 +59,10 @@ public class HistoryActivity extends Activity {
 	private void setupDbEnv() {
 		Log.i("topics.database", "setup!");
 		if (dbOpenHelper == null) {
-			dbOpenHelper = new TaskDbHelper(this);
+			dbOpenHelper = new FailureDbHelper(this);
 		}
 		if (dbHelper == null) {
-			dbHelper = new TaskDbFacade(dbOpenHelper.getWritableDatabase());
+			dbHelper = new FailureDbFacade(dbOpenHelper.getWritableDatabase());
 		}
 	}
 
@@ -75,18 +75,18 @@ public class HistoryActivity extends Activity {
 	}
 
 	public void sortByTitle() {
-		tasks = dbHelper.listAll();
-		taskLv.setAdapter(new MenuAdapter(this, tasks));
+		reports = dbHelper.listAll();
+		failureLv.setAdapter(new MenuAdapter(this, reports));
 	}
 
 	public void sortByBdate() {
-		tasks = dbHelper.listAllSortedBy("b_date", 1);
-		taskLv.setAdapter(new MenuAdapter(this, tasks));
+		reports = dbHelper.listAllSortedBy("b_date", 1);
+		failureLv.setAdapter(new MenuAdapter(this, reports));
 	}
 
 	public void sortByEdate() {
-		tasks = dbHelper.listAllSortedBy("e_date", 1);
-		taskLv.setAdapter(new MenuAdapter(this, tasks));
+		reports = dbHelper.listAllSortedBy("e_date", 1);
+		failureLv.setAdapter(new MenuAdapter(this, reports));
 	}
 
 }

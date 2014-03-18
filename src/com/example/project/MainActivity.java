@@ -13,15 +13,15 @@ import android.widget.ListView;
 
 import com.example.failurereporter.R;
 
-import database.TaskDbFacade;
-import database.TaskDbHelper;
+import database.FailureDbFacade;
+import database.FailureDbHelper;
 
 public class MainActivity extends Activity {
 
-    private TaskDbHelper dbOpenHelper = null;
-    public static TaskDbFacade dbHelper = null;
+    private FailureDbHelper dbOpenHelper = null;
+    public static FailureDbFacade dbHelper = null;
 	private ListView options;
-	private String [] menuOptions = {"Add New Task", "Ongoing Tasks", "History"};
+	private String [] menuOptions = {"Report failure", "Ongoing Reports", "History"};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
 		    	switch(position) {
 		    	case 0:	    		
 		    			//intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-		    			intent.setClass(view.getContext(), AddTaskActivity.class);
+		    			intent.setClass(view.getContext(), AddFailureActivity.class);
 		    			startActivity(intent);
 		    			break;
 		    	case 1:
@@ -76,10 +76,10 @@ public class MainActivity extends Activity {
 	 private void setupDbEnv() {
 		  Log.i("topics.database","setup!");
 	        if (dbOpenHelper == null) {
-	            dbOpenHelper = new TaskDbHelper(this);
+	            dbOpenHelper = new FailureDbHelper(this);
 	        } 
 	        if (dbHelper == null) {
-	            dbHelper = new TaskDbFacade(dbOpenHelper.getWritableDatabase());
+	            dbHelper = new FailureDbFacade(dbOpenHelper.getWritableDatabase());
 	        }
 	    }
 	 

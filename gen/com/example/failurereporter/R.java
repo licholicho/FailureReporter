@@ -304,7 +304,7 @@ containing a value of this type.
         public static final int google_play_services_version=0x7f070000;
     }
     public static final class layout {
-        public static final int activity_add_task=0x7f030000;
+        public static final int activity_add_failure=0x7f030000;
         public static final int activity_ongoing=0x7f030001;
         public static final int device_list=0x7f030002;
         public static final int device_name=0x7f030003;
@@ -312,11 +312,10 @@ containing a value of this type.
         public static final int menu_item=0x7f030005;
     }
     public static final class menu {
-        public static final int add_task=0x7f0a0000;
-        public static final int edit_task=0x7f0a0001;
-        public static final int history=0x7f0a0002;
-        public static final int main=0x7f0a0003;
-        public static final int ongoing=0x7f0a0004;
+        public static final int add_failure=0x7f0a0000;
+        public static final int history=0x7f0a0001;
+        public static final int main=0x7f0a0002;
+        public static final int ongoing=0x7f0a0003;
     }
     public static final class string {
         public static final int action_settings=0x7f06001b;
