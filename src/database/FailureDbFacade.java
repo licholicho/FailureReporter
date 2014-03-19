@@ -37,6 +37,7 @@ public class FailureDbFacade {
         v.put("done", 0);
         v.put("b_date", f.getBeginDateInString());
         v.put("e_date", f.getEndDateInString());
+        if (f.getPhotos() != null) {
         if (!f.getPhotos().isEmpty()) {
         if (f.getPhotos().size() > 0)
         	v.put("photo_1", f.getPhotoInBytes(0));
@@ -44,6 +45,7 @@ public class FailureDbFacade {
             v.put("photo_2", f.getPhotoInBytes(1));
         if (f.getPhotos().size() > 2)
             v.put("photo_3", f.getPhotoInBytes(2));
+        }
         }
         long id = db.insert(FailureDbHelper.TABLE_REPORTS, null, v);
         if (id >= 0) {
@@ -62,6 +64,7 @@ public class FailureDbFacade {
         v.put("done", f.done());
         v.put("b_date", f.getBeginDateInString());
         v.put("e_date", f.getEndDateInString());
+        if (f.getPhotos() != null) {
         if (!f.getPhotos().isEmpty()) {
         if (f.getPhotos().size() > 0)
         v.put("photo_1", f.getPhotoInBytes(0));
@@ -70,7 +73,7 @@ public class FailureDbFacade {
         if (f.getPhotos().size() > 2)
             v.put("photo_3", f.getPhotoInBytes(2));
         }
-        
+        }
         int rowsAffected = db.update(FailureDbHelper.TABLE_REPORTS, v, "_id="
                + f.getId(), null);
 

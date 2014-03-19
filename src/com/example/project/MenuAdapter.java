@@ -102,6 +102,9 @@ public class MenuAdapter extends BaseAdapter{
 	        	Intent i = new Intent();
 	        	i.setClass(context, EditFailureActivity.class);
 	        	i.putExtra("failure", f);
+	        	/*if (!f.getPhotos().isEmpty())
+	        		for (int j = 0; j < f.getPhotos().size(); j++)
+	        			i.putExtra("photo"+j, f.getPhotos().get(j));*/
 	        	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	        	context.startActivity(i);
 	        }

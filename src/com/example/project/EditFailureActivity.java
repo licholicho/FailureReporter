@@ -153,10 +153,25 @@ public class EditFailureActivity extends Activity {
 			longitudeEt.setText(String.valueOf(t.getLongitude()));
 			latitudeEt.setText(String.valueOf(t.getLatitude()));
 			photos = t.getPhotos();
+			/*byte[] photo1 = extras.getByteArray("photo0");
+			if (photo1 != null) {
+				photos = new ArrayList<byte[]>();
+				photos.add(photo1);
+			}
+			byte[] photo2 = extras.getByteArray("photo1");
+			if (photo2 != null) {
+				photos = new ArrayList<byte[]>();
+				photos.add(photo2);
+			}
+			byte[] photo3 = extras.getByteArray("photo2");
+			if (photo3 != null) {
+				photos = new ArrayList<byte[]>();
+				photos.add(photo3);
+			}
 			if(!photos.isEmpty()) {
 				for(int i = 0; i < photos.size(); i++)
 					createPhotoRow(photos.get(i), i+1);
-			}
+			}*/
 		/*	idToUpdate = extras.getLong("id");
 			title.setText(extras.getString("title"));
 			description.setText(extras.getString("description"));

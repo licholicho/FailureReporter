@@ -45,6 +45,8 @@ public class OngoingActivity extends Activity {
 	public static final int MESSAGE_TOAST = 5;
 	public static final String DEVICE_NAME = "device_name";
 	public static final String TOAST = "toast";
+	private String specialString = "_";
+	private static int counter = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -162,10 +164,11 @@ public class OngoingActivity extends Activity {
 			sendEmail();
 			break;
 		case CONTEXT_EXPORT: {
-			if (BA.isEnabled()
+			if (BA.isEnabled() && (mChatService != null)
 					&& (mChatService.getState() == BluetoothChatService.STATE_CONNECTED)) {
 				Log.i("jest", "wysylam");
 				// sendMessage("lololo");
+				specialString = t.getTitle();
 				sendFailure(t);
 			} else {
 				Log.i("jest", "problem z polaczeniem");
@@ -320,9 +323,12 @@ public class OngoingActivity extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
+					Log.e("lol","no nie !!!!!");
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				if (t == null)
+					Log.e("andro", "null o matko" );
 				// construct a string from the valid bytes in the buffer
 				String readMessage = t.getTitle();// new String(readBuf, 0,
 													// msg.arg1);
@@ -331,6 +337,7 @@ public class OngoingActivity extends Activity {
 					Toast.makeText(OngoingActivity.this, "znaleziono "+t.getTitle(),
 							Toast.LENGTH_SHORT).show();
 					Failure found = dbHelper.findByTitle(t.getTitle()).get(0);
+					Log.e("andro", "jestem" );
 					long originalId = found.getId();
 					found = t;
 					found.setId(originalId);
@@ -353,6 +360,16 @@ public class OngoingActivity extends Activity {
 				Toast.makeText(OngoingActivity.this, "r " + readMessage,
 						Toast.LENGTH_SHORT).show();
 				Log.i("jest", "read " + readMessage);
+				 /*else {
+					Toast.makeText(OngoingActivity.this, "przyszlo",
+							Toast.LENGTH_LONG).show();	
+					Failure f = dbHelper.findByTitle("kupa").get(0);
+					if (counter == 1)
+						f.setPhotosEmpty();
+					f.addPhoto(readBuf);
+					dbHelper.update(f);
+					break;
+				}*/
 				break;
 			}
 		}
@@ -384,9 +401,26 @@ public class OngoingActivity extends Activity {
 	 * mOutStringBuffer.setLength(0); // Reset out string buffer to zero and
 	 * clear the edit text field // mOutEditText.setText(mOutStringBuffer); } }
 	 */
+	private void sendPhoto (byte[] photo){
+		Log.i("jest", "poczatek send !");
+		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+			Toast.makeText(this, "not", Toast.LENGTH_SHORT).show();
+			return;
+		}
+	
+			Toast.makeText(this, "send photo ", Toast.LENGTH_SHORT).show();
+			mChatService.write(photo);
+
+			mOutStringBuffer.setLength(0);
+			// Reset out string buffer to zero and clear the edit text field
+			// mOutEditText.setText(mOutStringBuffer);
+		}
+	
+		
 	private void sendFailure(Failure failure) {
 
 		Log.i("jest", "poczatek send failure!");
+		specialString = "_";
 		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
 			Toast.makeText(this, "not", Toast.LENGTH_SHORT).show();
 			return;
@@ -399,13 +433,30 @@ public class OngoingActivity extends Activity {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			if (send == null)
+				Log.e("jest","null przy wysylaniu");
 			Toast.makeText(this, "send ", Toast.LENGTH_SHORT).show();
 			mChatService.write(send);
 
 			mOutStringBuffer.setLength(0);
+			
+			/*if (failure.getPhotos() != null) {
+				for (int i = 0; i < failure.getPhotos().size(); i++) {				
+					specialString = failure.getTitle();
+					if (i==0)
+						counter = 1;
+					else
+						counter = 0;*/
+		/*	specialString = failure.getTitle();
+			Toast.makeText(this, "tytul "+specialString, Toast.LENGTH_SHORT).show();
+					mChatService.write(failure.getPhotos().get(0));
+					mOutStringBuffer.setLength(0);*/
+			//		specialString = "";
+			//}
 			// Reset out string buffer to zero and clear the edit text field
 			// mOutEditText.setText(mOutStringBuffer);
-		}
+		//}
 	}
-
+	}
 }
+
