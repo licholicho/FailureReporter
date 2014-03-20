@@ -27,6 +27,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Images;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -92,6 +93,7 @@ public class EditFailureActivity extends Activity {
 		setContentView(R.layout.activity_add_failure);
 		setupDbEnv();
 
+		Log.e("onCreate","onCreate");
 		myScrollView = (ScrollView) findViewById(R.id.scrollView1);
 		myTableLayout = (TableLayout) findViewById(R.id.tableLayout_add);
 		title = (EditText) findViewById(R.id.title_et);
@@ -122,6 +124,7 @@ public class EditFailureActivity extends Activity {
 			longitudeEt.setText(savedInstanceState.getString("long"));
 			latitudeEt.setText(savedInstanceState.getString("lat"));
 			done.setChecked(savedInstanceState.getBoolean("done"));
+			if (photos.isEmpty()) {
 			for(int i = 0; i < 3; i++) {
 				byte[] photo = savedInstanceState.getByteArray("photo"+i);
 					if(photo != null) {
@@ -132,16 +135,17 @@ public class EditFailureActivity extends Activity {
 				}
 				
 				if(!photos.isEmpty()) {
+					Log.e("jest","dodaje w tym drugim");
 					photosTv.setVisibility(View.VISIBLE);
 					for(int i = 0; i < photos.size(); i++)
 						createPhotoRow(photos.get(i), i+1);
 				}
 				Log.i("koko","liczba dzieci "+myTableLayout.getChildCount());
-				
-		}
-
+			}
+		} else {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
+			Log.e("jest","extras");
 			Failure t = (Failure)extras.getSerializable("failure");
 			originalName = t.getTitle();
 			idToUpdate = t.getId();
@@ -153,32 +157,16 @@ public class EditFailureActivity extends Activity {
 			addressEt.setText(t.getNameOfPlace());
 			longitudeEt.setText(String.valueOf(t.getLongitude()));
 			latitudeEt.setText(String.valueOf(t.getLatitude()));
+			if (photos.isEmpty()) {
 			photos = t.getPhotos();
-			/*byte[] photo1 = extras.getByteArray("photo0");
-			if (photo1 != null) {
-				photos = new ArrayList<byte[]>();
-				photos.add(photo1);
-			}
-			byte[] photo2 = extras.getByteArray("photo1");
-			if (photo2 != null) {
-				photos = new ArrayList<byte[]>();
-				photos.add(photo2);
-			}
-			byte[] photo3 = extras.getByteArray("photo2");
-			if (photo3 != null) {
-				photos = new ArrayList<byte[]>();
-				photos.add(photo3);
-			}*/
 			if(!photos.isEmpty()) {
+				Log.e("jest","dodaje w extras");
 				for(int i = 0; i < photos.size(); i++)
 					createPhotoRow(photos.get(i), i+1);
 			}
-		/*	idToUpdate = extras.getLong("id");
-			title.setText(extras.getString("title"));
-			description.setText(extras.getString("description"));
-			done.setChecked(extras.getBoolean("done"));*/
+			}
 		}
-		
+		}
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		// Define the criteria how to select the locatioin provider -> use
 		// default
@@ -264,8 +252,8 @@ public class EditFailureActivity extends Activity {
 		f.setTitle(title.getText().toString());
 		f.setDescription(description.getText().toString());
 		f.setDone(f.isDone());
-		f.setBeginDate(getDateInString(beginDate));
-		f.setEndDate(getDateInString(endDate));
+		f.setBeginDate(Utils.getDateInString(beginDate));
+		f.setEndDate(Utils.getDateInString(endDate));
 		f.setPhotos(photos);
 		f.setLongitude(longitudeEt.getText().toString());
 		f.setLatitude(latitudeEt.getText().toString());
@@ -287,14 +275,6 @@ public class EditFailureActivity extends Activity {
 		Intent i = new Intent(this, OngoingActivity.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(i);
-	}
-
-	private String getDateInString(DatePicker dp) {
-		StringBuilder res = new StringBuilder();
-		res.append(String.valueOf(dp.getYear())).append("-");
-		res.append(String.valueOf(dp.getMonth())).append("-");
-		res.append(String.valueOf(dp.getDayOfMonth()));
-		return res.toString();
 	}
 
 	private void turnOffCalendar() {
@@ -329,13 +309,21 @@ public class EditFailureActivity extends Activity {
 			body.append("UPDATED INFO ABOUT UNSOLVED FAILURE!").append("\n");
 		body.append(title.getText().toString()).append("\n");
 		body.append(description.getText().toString()).append("\n");
-		body.append("Notification date: ").append(getDateInString(beginDate))
+		body.append("Notification date: ").append(Utils.getDateInString(beginDate))
 				.append("\n");
-		body.append("Solution date: ").append(getDateInString(endDate))
+		body.append("Solution date: ").append(Utils.getDateInString(endDate))
 				.append("\n");
 		body.append("Status: ").append(isDone());
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("message/rfc822");
+		if(!photos.isEmpty()) {
+			for (int j = 0; j < photos.size(); j++) {
+				Bitmap bitmap = BitmapFactory.decodeByteArray(photos.get(j), 0, photos.get(j).length);
+				String pathofBmp = Images.Media.insertImage(getContentResolver(), bitmap,"photo"+j, null);
+				Uri bmpUri = Uri.parse(pathofBmp);
+				i.putExtra(Intent.EXTRA_STREAM, bmpUri);
+			}
+		}
 		i.putExtra(Intent.EXTRA_EMAIL, "");
 		i.putExtra(Intent.EXTRA_SUBJECT, "UPDATED INFO ABOUT "+title.getText().toString().toUpperCase()+"!");
 		i.putExtra(Intent.EXTRA_TEXT, body.toString());
@@ -356,9 +344,9 @@ public class EditFailureActivity extends Activity {
 			body.append("UPDATED INFO ABOUT UNSOLVED FAILURE!").append("\n");
 		body.append(title.getText().toString()).append("\n");
 		body.append(description.getText().toString()).append("\n");
-		body.append("Notification date: ").append(getDateInString(beginDate))
+		body.append("Notification date: ").append(Utils.getDateInString(beginDate))
 				.append("\n");
-		body.append("Solution date: ").append(getDateInString(endDate))
+		body.append("Solution date: ").append(Utils.getDateInString(endDate))
 				.append("\n");
 		body.append("Status: ").append(isDone());
 		Intent sendSms = new Intent(Intent.ACTION_VIEW);

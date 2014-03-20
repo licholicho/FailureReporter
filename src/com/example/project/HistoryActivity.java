@@ -7,7 +7,11 @@ import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore.Images;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -193,6 +197,15 @@ public class HistoryActivity extends ParentActivity {
 					reports.get(current).getEndDateInString());
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("message/rfc822");
+		List<byte[]> photos = reports.get(current).getPhotos();
+		if(!photos.isEmpty()) {
+			for (int j = 0; j < photos.size(); j++) {
+				Bitmap bitmap = BitmapFactory.decodeByteArray(photos.get(j), 0, photos.get(j).length);
+				String pathofBmp = Images.Media.insertImage(getContentResolver(), bitmap,"photo"+j, null);
+				Uri bmpUri = Uri.parse(pathofBmp);
+				i.putExtra(Intent.EXTRA_STREAM, bmpUri);
+			}
+		}
 		i.putExtra(Intent.EXTRA_EMAIL, "");
 		i.putExtra(Intent.EXTRA_SUBJECT, "NEW UNSOLVED FAILURE!");
 		i.putExtra(Intent.EXTRA_TEXT, body.toString());

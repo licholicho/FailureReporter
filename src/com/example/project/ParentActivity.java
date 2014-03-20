@@ -12,13 +12,17 @@ import database.FailureDbHelper;
 import failure.Failure;
 import failure.Serializer;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore.Images;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -150,6 +154,15 @@ public class ParentActivity extends Activity {
 					reports.get(current).getEndDateInString());
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("message/rfc822");
+		List<byte[]> photos = reports.get(current).getPhotos();
+		if(!photos.isEmpty()) {
+			for (int j = 0; j < photos.size(); j++) {
+				Bitmap bitmap = BitmapFactory.decodeByteArray(photos.get(j), 0, photos.get(j).length);
+				String pathofBmp = Images.Media.insertImage(getContentResolver(), bitmap,"photo"+j, null);
+				Uri bmpUri = Uri.parse(pathofBmp);
+				i.putExtra(Intent.EXTRA_STREAM, bmpUri);
+			}
+		}
 		i.putExtra(Intent.EXTRA_EMAIL, "");
 		i.putExtra(Intent.EXTRA_SUBJECT, "NEW UNSOLVED FAILURE!");
 		i.putExtra(Intent.EXTRA_TEXT, body.toString());

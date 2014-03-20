@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Images;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -222,7 +223,7 @@ public class AddFailureActivity extends Activity {
 		Failure f = new Failure();
 		f.setTitle(title.getText().toString());
 		f.setDescription(description.getText().toString());
-		f.setBeginDate(getDateInString(beginDate));
+		f.setBeginDate(Utils.getDateInString(beginDate));
 		f.setNameOfPlace(addressEt.getText().toString());
 		f.setLongitude(longitudeEt.getText().toString());
 		f.setLatitude(latitudeEt.getText().toString());
@@ -251,14 +252,6 @@ public class AddFailureActivity extends Activity {
 		startActivity(i);
 	}
 
-	private String getDateInString(DatePicker dp) {
-		StringBuilder res = new StringBuilder();
-		res.append(String.valueOf(dp.getYear())).append("-");
-		res.append(String.valueOf(dp.getMonth())).append("-");
-		res.append(String.valueOf(dp.getDayOfMonth()));
-		return res.toString();
-	}
-
 	private void turnOffCalendar() {
 		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 		if (currentapiVersion >= 11) {
@@ -276,9 +269,17 @@ public class AddFailureActivity extends Activity {
 		body.append("NEW UNSOLVED FAILURE!").append("\n");
 		body.append(title.getText().toString()).append("\n");
 		body.append(description.getText().toString()).append("\n");
-		body.append("Date: ").append(getDateInString(beginDate));
+		body.append("Date: ").append(Utils.getDateInString(beginDate));
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("message/rfc822");
+		if(!photos.isEmpty()) {
+			for (int j = 0; j < photos.size(); j++) {
+				Bitmap bitmap = BitmapFactory.decodeByteArray(photos.get(j), 0, photos.get(j).length);
+				String pathofBmp = Images.Media.insertImage(getContentResolver(), bitmap,"photo"+j, null);
+				Uri bmpUri = Uri.parse(pathofBmp);
+				i.putExtra(Intent.EXTRA_STREAM, bmpUri);
+			}
+		}
 		i.putExtra(Intent.EXTRA_EMAIL, "");
 		i.putExtra(Intent.EXTRA_SUBJECT, "NEW UNSOLVED FAILURE!");
 		i.putExtra(Intent.EXTRA_TEXT, body.toString());
@@ -296,7 +297,7 @@ public class AddFailureActivity extends Activity {
 		body.append("NEW UNSOLVED FAILURE!").append("\n");
 		body.append(title.getText().toString()).append("\n");
 		body.append(description.getText().toString()).append("\n");
-		body.append("Date: ").append(getDateInString(beginDate));
+		body.append("Date: ").append(Utils.getDateInString(beginDate));
 		Intent sendSms = new Intent(Intent.ACTION_VIEW);
 		sendSms.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
 		sendSms.putExtra("sms_body", body.toString());
