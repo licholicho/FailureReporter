@@ -17,7 +17,7 @@
     <string name="reminder">Reminder</string>
     <string name="title">Title</string>
     <string name="sure_to_delete">Delete report?</string>
-     <string name="sure_to_clear_history">Sure to clear history?</string>
+    <string name="sure_to_clear_history">Sure to clear history?</string>
     <string name="past_or_delete">Move report to history?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -44,8 +44,8 @@
     <string name="sort">SORT BY</string>
     <string name="export">EXPORT</string>
     <string name="bluetooth">BLUETOOTH</string>
-    
-       <!-- BluetoothChat -->
+
+    <!-- BluetoothChat -->
     <string name="send">Send</string>
     <string name="not_connected">You are not connected to a device</string>
     <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
@@ -61,5 +61,6 @@
     <string name="title_paired_devices">Paired Devices</string>
     <string name="title_other_devices">Other Available Devices</string>
     <string name="button_scan">Scan for devices</string>
+    <string name="title_activity_parent">ParentActivity</string>
 
 </resources>

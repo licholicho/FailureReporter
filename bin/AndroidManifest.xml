@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.failurereporter"
     android:versionCode="1"
@@ -23,7 +24,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.example.failurereporter.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera"></uses-feature> 
+
+    <uses-feature android:name="android.hardware.camera" >
+    </uses-feature>
 
     <meta-data
         android:name="com.google.android.gms.version"
@@ -71,6 +74,10 @@
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/select_device"
             android:theme="@android:style/Theme.Dialog" >
+        </activity>
+        <activity
+            android:name="com.example.project.ParentActivity"
+            android:label="@string/title_activity_parent" >
         </activity>
     </application>
 

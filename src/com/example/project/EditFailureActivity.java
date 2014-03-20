@@ -167,11 +167,11 @@ public class EditFailureActivity extends Activity {
 			if (photo3 != null) {
 				photos = new ArrayList<byte[]>();
 				photos.add(photo3);
-			}
+			}*/
 			if(!photos.isEmpty()) {
 				for(int i = 0; i < photos.size(); i++)
 					createPhotoRow(photos.get(i), i+1);
-			}*/
+			}
 		/*	idToUpdate = extras.getLong("id");
 			title.setText(extras.getString("title"));
 			description.setText(extras.getString("description"));

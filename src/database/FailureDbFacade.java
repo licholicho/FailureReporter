@@ -66,6 +66,7 @@ public class FailureDbFacade {
         v.put("e_date", f.getEndDateInString());
         if (f.getPhotos() != null) {
         if (!f.getPhotos().isEmpty()) {
+        	Log.e("foto","sa jakies zdj");
         if (f.getPhotos().size() > 0)
         v.put("photo_1", f.getPhotoInBytes(0));
         if (f.getPhotos().size() > 1)

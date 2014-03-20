@@ -9,6 +9,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 public class Failure implements Serializable {
@@ -288,7 +292,7 @@ public class Failure implements Serializable {
 		this.photos.add(i, photo);
 	}
 
-/*	public Drawable getDrawable(int i) {
+	public Drawable getDrawable(int i) {
 		Bitmap bitMapImage = BitmapFactory.decodeByteArray(photos.get(i), 0,
 				photos.get(i).length);
 		return ((Drawable) new BitmapDrawable(bitMapImage));
@@ -298,7 +302,7 @@ public class Failure implements Serializable {
 		return BitmapFactory.decodeByteArray(photos.get(i), 0,
 				photos.get(i).length);
 	}
-*/
+
 	public String dateToString(Date date) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String datetime = dateFormat.format(date);
