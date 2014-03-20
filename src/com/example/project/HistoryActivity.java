@@ -3,6 +3,8 @@ package com.example.project;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,7 +54,9 @@ public class HistoryActivity extends Activity {
 		if (item.getItemId() == R.id.sort_edate) {
 			sortByEdate();
 		}
-
+		if (item.getItemId() == R.id.menu_delete_all) {
+			deleteAllDone();
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -87,6 +91,28 @@ public class HistoryActivity extends Activity {
 	public void sortByEdate() {
 		reports = dbHelper.listAllSortedBy("e_date", 1);
 		failureLv.setAdapter(new MenuAdapter(this, reports));
+	}
+	
+	public void deleteAllDone(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	// Add the buttons
+    	builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+    	           public void onClick(DialogInterface dialog, int id) {
+    	        	   List<Failure> listToDelete = reports;//dbHelper.listAllDone();
+    	        	   for (Failure f : listToDelete)
+    	        		   dbHelper.delete(f);
+    	        	   reports = dbHelper.listAllDone();
+    	       			failureLv.setAdapter(new MenuAdapter(HistoryActivity.this, reports));
+    	           }
+    	       });
+    	builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+    	           public void onClick(DialogInterface dialog, int id) {
+
+    	           }
+    	       });
+    	builder.setMessage(R.string.sure_to_clear_history);
+    	AlertDialog dialog = builder.create();
+    	dialog.show();
 	}
 
 }

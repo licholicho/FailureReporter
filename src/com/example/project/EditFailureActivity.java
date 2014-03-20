@@ -634,4 +634,6 @@ public class EditFailureActivity extends Activity {
 		}
 
 	}
+	
+
 }

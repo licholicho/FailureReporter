@@ -505,7 +505,7 @@ public class AddFailureActivity extends Activity {
 				else Log.i("lol","gesher");
 				Bitmap picture = (Bitmap) extras.getParcelable("data");
 		        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		        picture.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+		        picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 		        byte[] byteArray = stream.toByteArray();
 		        photos.add(byteArray);
 		        photosTv.setVisibility(View.VISIBLE);

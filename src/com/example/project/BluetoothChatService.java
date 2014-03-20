@@ -19,6 +19,8 @@ package com.example.project;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.UUID;
 
 import android.bluetooth.BluetoothAdapter;
@@ -307,11 +309,22 @@ public class BluetoothChatService {
 
             // Get a BluetoothSocket for a connection with the
             // given BluetoothDevice
-            try {
-                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
+            try {/*
+			Method m = device.getClass().getMethod("createRfcommSocket", new Class[] {int.class});
+			tmp = (BluetoothSocket) m.invoke(device, 1);*/
+               tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
             } catch (IOException e) {
-                Log.e("jest", "create() failed", e);
-            }
+           	 Log.e("jest", "no such method", e);
+           }
+			   // tutaj zmienilam xD
+          /*  } catch (NoSuchMethodException e) {
+            	 Log.e("jest", "no such method", e);
+            } catch (IllegalAccessException e) {
+           	 Log.e("jest", "no such method", e);
+           } catch (InvocationTargetException e) {
+          	 Log.e("jest", "no such method", e);
+          }*/
+            
             mmSocket = tmp;
         }
 
@@ -387,7 +400,7 @@ public class BluetoothChatService {
 
         public void run() {
             Log.i(TAG, "BEGIN mConnectedThread");
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[8 * 1024];
             int bytes;
 
             // Keep listening to the InputStream while connected
