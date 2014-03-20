@@ -408,10 +408,14 @@ public class BluetoothChatService {
                 try {
                     // Read from the InputStream
                     bytes = mmInStream.read(buffer);
-
+                    byte[] failure = buffer;
                     // Send the obtained bytes to the UI Activity
-                    mHandler.obtainMessage(OngoingActivity.MESSAGE_READ, bytes, -1, buffer)
-                            .sendToTarget();
+                  //  mHandler.obtainMessage(ParentActivity.MESSAGE_READ, bytes, -1, buffer)
+                    //mHandler.obtainMessage(ParentActivity.MESSAGE_READ, bytes, -1, failure)
+                      //      .sendToTarget();
+                    Message m = mHandler.obtainMessage(ParentActivity.MESSAGE_READ, bytes, -1, failure);
+                    mHandler.sendMessage(m);
+                    
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
                     connectionLost();
@@ -429,7 +433,7 @@ public class BluetoothChatService {
                 mmOutStream.write(buffer);
 
                 // Share the sent message back to the UI Activity
-                mHandler.obtainMessage(OngoingActivity.MESSAGE_WRITE, -1, -1, buffer)
+                mHandler.obtainMessage(ParentActivity.MESSAGE_WRITE, -1, -1, buffer)
                         .sendToTarget();
             } catch (IOException e) {
                 Log.e(TAG, "Exception during write", e);

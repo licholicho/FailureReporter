@@ -29,17 +29,17 @@ import android.widget.Toast;
 
 public class ParentActivity extends Activity {
 
-	private ListView failureLv;
-	private List<Failure> reports;
-	private FailureDbHelper dbOpenHelper = null;
+	protected ListView failureLv;
+	protected List<Failure> reports;
+	protected FailureDbHelper dbOpenHelper = null;
 	public static FailureDbFacade dbHelper = null;
-	private static int current = -1;
-	private BluetoothAdapter BA;
-	private static final int REQUEST_CONNECT_DEVICE = 1;
-	private static final int REQUEST_ENABLE_BT = 2;
-	private BluetoothChatService mChatService = null;
-	private StringBuffer mOutStringBuffer;
-	private String mConnectedDeviceName;
+	protected static int current = -1;
+	protected BluetoothAdapter BA;
+	protected static final int REQUEST_CONNECT_DEVICE = 1;
+	protected static final int REQUEST_ENABLE_BT = 2;
+	protected BluetoothChatService mChatService = null;
+	protected StringBuffer mOutStringBuffer;
+	protected String mConnectedDeviceName;
 	public static final int MESSAGE_STATE_CHANGE = 1;
 	public static final int MESSAGE_READ = 2;
 	public static final int MESSAGE_WRITE = 3;
@@ -47,27 +47,31 @@ public class ParentActivity extends Activity {
 	public static final int MESSAGE_TOAST = 5;
 	public static final String DEVICE_NAME = "device_name";
 	public static final String TOAST = "toast";
-	
-	//private String specialString = "_";
-	//private static int counter = 0;
+	protected static final int CONTEXT_SMS = 1;
+	protected static final int CONTEXT_EMAIL = 2;
+	protected static final int CONTEXT_EXPORT = 3;
+	//protected String specialString = "_";
+	//protected static int counter = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ongoing);
-
 		setupDbEnv();
-
-		reports = dbHelper.listAll();
-		Log.i("start", "pzeszlo");
-		failureLv = (ListView) findViewById(R.id.ongoing_menu);
 		BA = BluetoothAdapter.getDefaultAdapter();
+	//	init();
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
 		Log.i("start", "onstart");
+		
+	}
+	
+	protected void init(){
+		viewAll();
+		failureLv = (ListView) findViewById(R.id.ongoing_menu);
 		setAdapter();
 	}
 
@@ -81,6 +85,8 @@ public class ParentActivity extends Activity {
 			dbHelper = new FailureDbFacade(dbOpenHelper.getWritableDatabase());
 		}
 	}
+	
+
 
 	@Override
 	public void onBackPressed() {
@@ -91,7 +97,7 @@ public class ParentActivity extends Activity {
 	}
 
 	public void sortByTitle() {
-		reports = dbHelper.listAll();
+		viewAll();
 		setAdapter();
 	}
 
@@ -104,9 +110,7 @@ public class ParentActivity extends Activity {
 		current = i;
 	}
 
-	final int CONTEXT_SMS = 1;
-	final int CONTEXT_EMAIL = 2;
-	final int CONTEXT_EXPORT = 3;
+
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -119,38 +123,13 @@ public class ParentActivity extends Activity {
 		Log.i("lol", "asfs");
 	}
 
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
-		Failure t = reports.get(current);
-		switch (item.getItemId()) {
-		case CONTEXT_SMS:
-			sendSms();
-			break;
-		case CONTEXT_EMAIL:
-			sendEmail();
-			break;
-		case CONTEXT_EXPORT: {
-			if (BA.isEnabled() && (mChatService != null)
-					&& (mChatService.getState() == BluetoothChatService.STATE_CONNECTED)) {
-				sendFailure(t);
-			} else {
-				Log.i("jest", "problem z polaczeniem");
-			}
-		}
-			break;
-		}
-
-		return super.onContextItemSelected(item);
-	}
-
-	private void sendSms() {
+	protected void sendSms() {
 		StringBuilder body = new StringBuilder();
 		body.append("NEW UNSOLVED FAILURE!").append("\n");
 		body.append(reports.get(current).getTitle()).append("\n");
 		body.append(reports.get(current).getDescription()).append("\n");
 		body.append("Notification date: ").append(
-				reports.get(current).getBeginDateInString());
+				reports.get(current).getBeginDateInString()).append("\n");
 		body.append("Solution date: ").append(
 				reports.get(current).getEndDateInString());
 		Intent sendSms = new Intent(Intent.ACTION_VIEW);
@@ -159,7 +138,7 @@ public class ParentActivity extends Activity {
 		startActivity(sendSms);
 	}
 
-	private void sendEmail() {
+	protected void sendEmail() {
 		StringBuilder body = new StringBuilder();
 		body.append("NEW UNSOLVED FAILURE!").append("\n");
 		body.append(reports.get(current).getTitle()).append("\n");
@@ -180,7 +159,7 @@ public class ParentActivity extends Activity {
 		}
 	}
 
-	private void checkBluetooth() {
+	protected void checkBluetooth() {
 		if (!BA.isEnabled()) {
 			Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(turnOn, 0);
@@ -193,7 +172,7 @@ public class ParentActivity extends Activity {
 		}
 	}
 
-	private void openDeviceList() {
+	protected void openDeviceList() {
 		Intent serverIntent = new Intent(this, DeviceListActivity.class);
 		serverIntent.putExtra("message", "lol2");
 		startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
@@ -233,7 +212,7 @@ public class ParentActivity extends Activity {
 		}
 	}
 
-	private final Handler mHandler = new Handler() {
+	protected final Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			Log.i("jest", "handler");
@@ -305,15 +284,15 @@ public class ParentActivity extends Activity {
 					Toast.makeText(getApplicationContext(), "nowe "+found.getDescription(),
 							Toast.LENGTH_SHORT).show();
 					dbHelper.update(found);
-					reports = dbHelper.listAll();
+					viewAll();
 					setAdapter();
 				} else {
 					Log.i("db","nie znaleziono "+t.getTitle());
-					Toast.makeText(getApplicationContext(), "nie znaleziono "+t.getTitle(),
+					Toast.makeText(getApplicationContext(), "nie znaleziono "+t.isDone(),
 							Toast.LENGTH_SHORT).show();
 					dbHelper.insert(t);
-					reports = dbHelper.listAll();
-					
+					viewAll();
+					setAdapter();
 				}
 
 				Toast.makeText(getApplicationContext(), "r " + readMessage,
@@ -334,7 +313,7 @@ public class ParentActivity extends Activity {
 		}
 	};
 
-	private void setupChat() {
+	protected void setupChat() {
 		Log.i("jest", "setupChat");
 		mChatService = new BluetoothChatService(this, mHandler);
 
@@ -346,24 +325,14 @@ public class ParentActivity extends Activity {
 	protected void setAdapter() {
 		failureLv.setAdapter(new MenuAdapter(ParentActivity.this,
 				reports));
-	}	/*
-	 * private void sendMessage(String message) { Log.i("jest",
-	 * "poczatek send! " + message); // Check that we're actually connected
-	 * before trying anything if (mChatService.getState() !=
-	 * BluetoothChatService.STATE_CONNECTED) { Toast.makeText(this, "not",
-	 * Toast.LENGTH_SHORT).show(); Log.i("jest", "zleeeeeee"); return; }
-	 * 
-	 * // Check that there's actually something to send if (message.length() >
-	 * 0) { Log.i("jest", "dopszeeeeee"); // Get the message bytes and tell the
-	 * BluetoothChatService to write byte[] send = message.getBytes();
-	 * 
-	 * Toast.makeText(this, "send " + message, Toast.LENGTH_SHORT).show();
-	 * mChatService.write(send);
-	 * 
-	 * mOutStringBuffer.setLength(0); // Reset out string buffer to zero and
-	 * clear the edit text field // mOutEditText.setText(mOutStringBuffer); } }
-	 */
-	private void sendPhoto (byte[] photo){
+	}
+	
+	protected void viewAll(){
+		Log.e("wywolanie","z bazowej");
+		reports = dbHelper.listAll();			
+	}
+	
+	protected void sendPhoto (byte[] photo){
 		Log.i("jest", "poczatek send !");
 		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
 			Toast.makeText(this, "not", Toast.LENGTH_SHORT).show();
@@ -379,7 +348,7 @@ public class ParentActivity extends Activity {
 		}
 	
 		
-	private void sendFailure(Failure failure) {
+	protected void sendFailure(Failure failure) {
 
 		Log.i("jest", "poczatek send failure!");
 		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
@@ -400,23 +369,6 @@ public class ParentActivity extends Activity {
 			mChatService.write(send);
 
 			mOutStringBuffer.setLength(0);
-			
-			/*if (failure.getPhotos() != null) {
-				for (int i = 0; i < failure.getPhotos().size(); i++) {				
-					specialString = failure.getTitle();
-					if (i==0)
-						counter = 1;
-					else
-						counter = 0;*/
-		/*	specialString = failure.getTitle();
-			Toast.makeText(this, "tytul "+specialString, Toast.LENGTH_SHORT).show();
-					mChatService.write(failure.getPhotos().get(0));
-					mOutStringBuffer.setLength(0);*/
-			//		specialString = "";
-			//}
-			// Reset out string buffer to zero and clear the edit text field
-			// mOutEditText.setText(mOutStringBuffer);
-		//}
 	}
 	}
 

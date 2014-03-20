@@ -1,14 +1,13 @@
 package failure;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import utils.Utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -22,7 +21,7 @@ public class Failure implements Serializable {
 	private String title;
 	private String description;
 	private String beginDate;
-	private String endDate = dateToString(new Date(Long.MAX_VALUE));
+	private String endDate = Utils.dateToString(new Date(Long.MAX_VALUE));
 	private boolean status;
 	private double latitude;
 	private double longitude;
@@ -136,7 +135,7 @@ public class Failure implements Serializable {
 	}
 
 	public Date getBeginDate() {
-		return stringToDate(beginDate);
+		return Utils.stringToDate(beginDate);
 	}
 
 	public String getBeginDateInString() {
@@ -144,11 +143,11 @@ public class Failure implements Serializable {
 	}
 
 	public void setBeginDate(String beginDate) {
-		this.beginDate = dateToString(stringToDate(beginDate));
+		this.beginDate = Utils.dateToString(Utils.stringToDate(beginDate));
 	}
 
 	public void setBeginDate(Date beginDate) {
-		this.beginDate = dateToString(beginDate);
+		this.beginDate = Utils.dateToString(beginDate);
 	}
 
 	public String getEndDateInString() {
@@ -156,22 +155,22 @@ public class Failure implements Serializable {
 	}
 
 	public void setEndDate(Date endDate) {
-		this.endDate = dateToString(endDate);
+		this.endDate = Utils.dateToString(endDate);
 	}
 
 	public void setEndDate(String endDate) {
-		this.endDate = dateToString(stringToDate(endDate));
+		this.endDate = Utils.dateToString(Utils.stringToDate(endDate));
 	}
 
 	private GregorianCalendar getStartDate() {
 		Calendar cal = GregorianCalendar.getInstance();
-		cal.setTime(stringToDate(beginDate));
+		cal.setTime(Utils.stringToDate(beginDate));
 		return (GregorianCalendar) cal;
 	}
 
 	private GregorianCalendar getEndDate() {
 		Calendar cal = GregorianCalendar.getInstance();
-		cal.setTime(stringToDate(endDate));
+		cal.setTime(Utils.stringToDate(endDate));
 		return (GregorianCalendar) cal;
 	}
 
@@ -303,23 +302,6 @@ public class Failure implements Serializable {
 				photos.get(i).length);
 	}
 
-	public String dateToString(Date date) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String datetime = dateFormat.format(date);
-		return datetime;
-	}
-
-	public Date stringToDate(String dt) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();
-		try {
-			date = format.parse(dt);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return date;
-	}
 /*
 	private void writeObject(ObjectOutputStream o) throws IOException {
 

@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 
+import utils.GeoUtils;
 import utils.Utils;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -147,7 +148,7 @@ public class AddFailureActivity extends Activity {
 				latitudeEt.setText(String.valueOf(ltt));
 				if (locThread != null)
 					locThread.interrupt();
-				locThread = new LocationThread(Utils.GET_FROM_LAT_AND_LNG);
+				locThread = new LocationThread(GeoUtils.GET_FROM_LAT_AND_LNG);
 				locThread.start();
 			}
 		});
@@ -158,7 +159,7 @@ public class AddFailureActivity extends Activity {
 			public void onClick(View v) {
 				Log.i("koko", "lol jest ich "+myTableLayout.getChildCount());
 				String address = addressEt.getText().toString();
-				locThread = new LocationThread(Utils.GET_FROM_ADDRESS, address);
+				locThread = new LocationThread(GeoUtils.GET_FROM_ADDRESS, address);
 				locThread.start();
 			}
 		});
@@ -387,9 +388,9 @@ public class AddFailureActivity extends Activity {
 		public void run() {
 			Log.i("gowno", "looooooooo " + address);
 			switch (action) {
-			case Utils.GET_FROM_ADDRESS:
+			case GeoUtils.GET_FROM_ADDRESS:
 				try {
-					final LatLng p = Utils.getLocationFromString(address);
+					final LatLng p = GeoUtils.getLocationFromString(address);
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
@@ -401,11 +402,11 @@ public class AddFailureActivity extends Activity {
 					e.printStackTrace();
 				}
 				break;
-			case Utils.GET_FROM_LAT_AND_LNG:
+			case GeoUtils.GET_FROM_LAT_AND_LNG:
 				Log.i("gowno", "lat " + latitudeEt.getText().toString());
 
 				try {
-					final String a = Utils.getStringFromLocation(ltt, lgt)
+					final String a = GeoUtils.getStringFromLocation(ltt, lgt)
 							.get(0).getAddressLine(0);
 					runOnUiThread(new Runnable() {
 

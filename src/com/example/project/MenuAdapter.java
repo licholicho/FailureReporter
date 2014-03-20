@@ -157,7 +157,8 @@ public class MenuAdapter extends BaseAdapter{
 				// TODO Auto-generated method stub
 				context.registerForContextMenu(but);
                 context.openContextMenu(but);
-                OngoingActivity.setCurrent(pos);
+                //OngoingActivity.setCurrent(pos);
+                ParentActivity.setCurrent(pos);
 			}
 		});
 		
