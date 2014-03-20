@@ -93,7 +93,7 @@ public class EditFailureActivity extends Activity {
 		setContentView(R.layout.activity_add_failure);
 		setupDbEnv();
 
-		Log.e("onCreate","onCreate");
+		Utils.log("onCreate w EA");
 		myScrollView = (ScrollView) findViewById(R.id.scrollView1);
 		myTableLayout = (TableLayout) findViewById(R.id.tableLayout_add);
 		title = (EditText) findViewById(R.id.title_et);
@@ -135,17 +135,14 @@ public class EditFailureActivity extends Activity {
 				}
 				
 				if(!photos.isEmpty()) {
-					Log.e("jest","dodaje w tym drugim");
 					photosTv.setVisibility(View.VISIBLE);
 					for(int i = 0; i < photos.size(); i++)
 						createPhotoRow(photos.get(i), i+1);
 				}
-				Log.i("koko","liczba dzieci "+myTableLayout.getChildCount());
 			}
 		} else {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			Log.e("jest","extras");
 			Failure t = (Failure)extras.getSerializable("failure");
 			originalName = t.getTitle();
 			idToUpdate = t.getId();
@@ -161,7 +158,6 @@ public class EditFailureActivity extends Activity {
 			if (photos.isEmpty()) {
 				photos = t.getPhotos();
 			if(!photos.isEmpty()) {
-				Log.e("jest","dodaje w extras");
 				for(int i = 0; i < photos.size(); i++)
 					createPhotoRow(photos.get(i), i+1);
 			}
@@ -196,7 +192,6 @@ public class EditFailureActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Log.i("koko", "lol jest ich "+myTableLayout.getChildCount());
 				String address = addressEt.getText().toString();
 				locThread = new LocationThread(GeoUtils.GET_FROM_ADDRESS, address);
 				locThread.start();
@@ -247,14 +242,12 @@ public class EditFailureActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void updateFailure() {
-		
+	public void updateFailure() {		
 		Failure f = dbHelper.getById(idToUpdate);
 		f.setTitle(title.getText().toString());
 		f.setDescription(description.getText().toString());
 		f.setDone(done.isChecked());
 		f.setBeginDate(Utils.getDateInString(beginDate));
-		Log.e("topics", "update "+done.isChecked()+" "+Utils.getDateInString(endDate));
 		if (done.isChecked())
 			f.setEndDate(Utils.getDateInString(endDate));
 		f.setPhotos(photos);
@@ -265,7 +258,7 @@ public class EditFailureActivity extends Activity {
 	}
 
 	private void setupDbEnv() {
-		Log.i("topics.database", "setup!");
+		Utils.log("setup!");
 		if (dbOpenHelper == null) {
 			dbOpenHelper = new FailureDbHelper(this);
 		}
@@ -446,7 +439,6 @@ public class EditFailureActivity extends Activity {
 
 		public LocationThread(String address) {
 			this.address = address;
-			Log.i("gowno", address);
 		}
 
 		public LocationThread(int action, String address) {
@@ -455,7 +447,6 @@ public class EditFailureActivity extends Activity {
 		}
 
 		public void run() {
-			Log.i("gowno", "looooooooo " + address);
 			switch (action) {
 			case GeoUtils.GET_FROM_ADDRESS:
 				try {
@@ -472,8 +463,6 @@ public class EditFailureActivity extends Activity {
 				}
 				break;
 			case GeoUtils.GET_FROM_LAT_AND_LNG:
-				Log.i("gowno", "lat " + latitudeEt.getText().toString());
-
 				try {
 					final String a = GeoUtils.getStringFromLocation(ltt, lgt)
 							.get(0).getAddressLine(0);
@@ -528,17 +517,12 @@ public class EditFailureActivity extends Activity {
 			public void onClick(View v) {
 			
 				int currentChildCount = myTableLayout.getChildCount();
-				Log.i("koko"," ccc "+currentChildCount);
 				int id = tr.getId();
-				Log.i("koko","kliknelam "+id);
 				photos.remove(id-STABLE_CHILD_COUNT-1);
 				if(photos.isEmpty())
 					photosTv.setVisibility(View.GONE);
 				for (int i = id; i<= currentChildCount; i++) {
-					Log.i("koko","for "+i+ " ccc "+currentChildCount);
 					View view = myTableLayout.getChildAt(i-1);
-					if (view == null)
-						Log.i("koko","o matko to jest null :(");
 					int oldId = view.getId();
 					oldId -= 1;
 					view.setId(oldId);
@@ -574,17 +558,13 @@ public class EditFailureActivity extends Activity {
 		if (resultCode == RESULT_OK) {
 			if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 				Bundle extras = data.getExtras();
-				
-				if(extras.get("data") == null) Log.i("lol","data to debil");
-				else Log.i("lol","gesher");
 				Bitmap picture = (Bitmap) extras.getParcelable("data");
 		        ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		        picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 		        byte[] byteArray = stream.toByteArray();
 		        photos.add(byteArray);
 		        photosTv.setVisibility(View.VISIBLE);
-		        
-		        Log.i("koko","przed "+myTableLayout.getChildCount());
+
 		        final TableRow tr = new TableRow(this);
 		        LinearLayout ll = new LinearLayout(this);
 		        ll.setOrientation(LinearLayout.HORIZONTAL);
@@ -600,17 +580,12 @@ public class EditFailureActivity extends Activity {
 					public void onClick(View v) {
 					
 						int currentChildCount = myTableLayout.getChildCount();
-						Log.i("koko"," ccc "+currentChildCount);
 						int id = tr.getId();
-						Log.i("koko","kliknelam "+id);
 						photos.remove(id-STABLE_CHILD_COUNT-1);
 						if(photos.isEmpty())
 							photosTv.setVisibility(View.GONE);
 						for (int i = id; i<= currentChildCount; i++) {
-							Log.i("koko","for "+i+ " ccc "+currentChildCount);
 							View view = myTableLayout.getChildAt(i-1);
-							if (view == null)
-								Log.i("koko","o matko to jest null :(");
 							int oldId = view.getId();
 							oldId -= 1;
 							view.setId(oldId);

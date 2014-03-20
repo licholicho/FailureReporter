@@ -3,6 +3,8 @@ package com.example.project;
 import java.io.IOException;
 import java.util.List;
 
+import utils.Utils;
+
 import com.example.failurereporter.R;
 import com.example.failurereporter.R.layout;
 import com.example.failurereporter.R.menu;
@@ -66,12 +68,6 @@ public class ParentActivity extends Activity {
 	//	init();
 	}
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-		Log.i("start", "onstart");
-		
-	}
 	
 	protected void init(){
 		viewAll();
@@ -81,7 +77,6 @@ public class ParentActivity extends Activity {
 
 
 	protected void setupDbEnv() {
-		Log.i("topics.database", "setup!");
 		if (dbOpenHelper == null) {
 			dbOpenHelper = new FailureDbHelper(this);
 		}
@@ -124,7 +119,6 @@ public class ParentActivity extends Activity {
 		menu.add(Menu.NONE, CONTEXT_SMS, Menu.NONE, "SMS");
 		menu.add(Menu.NONE, CONTEXT_EMAIL, Menu.NONE, "E-mail");
 		menu.add(Menu.NONE, CONTEXT_EXPORT, Menu.NONE, "Export");
-		Log.i("lol", "asfs");
 	}
 
 	protected void sendSms() {
@@ -192,8 +186,6 @@ public class ParentActivity extends Activity {
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Log.d("jest", "onActivityResult " + requestCode);
-		// openDeviceList();
 		switch (requestCode) {
 		case REQUEST_CONNECT_DEVICE:
 			// When DeviceListActivity returns with a device to connect
@@ -217,7 +209,7 @@ public class ParentActivity extends Activity {
 				setupChat();
 			} else {
 				// User did not enable Bluetooth or an error occured
-				Log.d("jest", "BT not enabled");
+				Utils.log("BT not enabled");
 				Toast.makeText(this, R.string.bt_not_enabled_leaving,
 						Toast.LENGTH_SHORT).show();
 				finish();
@@ -228,7 +220,6 @@ public class ParentActivity extends Activity {
 	protected final Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			Log.i("jest", "handler");
 			switch (msg.what) {
 			case MESSAGE_STATE_CHANGE:
 				switch (msg.arg1) {
@@ -265,7 +256,6 @@ public class ParentActivity extends Activity {
 				 * Toast.makeText(OngoingActivity.this, "w " + writeMessage,
 				 * Toast.LENGTH_SHORT).show();
 				 */
-				Log.i("jest", "write ");
 				break;
 			case MESSAGE_READ:
 				byte[] readBuf = (byte[]) msg.obj;
@@ -276,21 +266,16 @@ public class ParentActivity extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					Log.e("lol","no nie !!!!!");
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				if (t == null)
-					Log.e("andro", "null o matko" );
 				// construct a string from the valid bytes in the buffer
 				String readMessage = t.getTitle();// new String(readBuf, 0,
 													// msg.arg1);
 				if (!dbHelper.findByTitle(t.getTitle()).isEmpty()) {
-					Log.i("db","znaleziono "+t.getTitle());
 					Toast.makeText(getApplicationContext(), "znaleziono "+t.getTitle(),
 							Toast.LENGTH_SHORT).show();
 					Failure found = dbHelper.findByTitle(t.getTitle()).get(0);
-					Log.e("andro", "jestem" );
 					long originalId = found.getId();
 					found = t;
 					found.setId(originalId);
@@ -300,7 +285,6 @@ public class ParentActivity extends Activity {
 					viewAll();
 					setAdapter();
 				} else {
-					Log.i("db","nie znaleziono "+t.getTitle());
 					Toast.makeText(getApplicationContext(), "nie znaleziono "+t.isDone(),
 							Toast.LENGTH_SHORT).show();
 					dbHelper.insert(t);
@@ -310,7 +294,6 @@ public class ParentActivity extends Activity {
 
 				Toast.makeText(getApplicationContext(), "r " + readMessage,
 						Toast.LENGTH_SHORT).show();
-				Log.i("jest", "read " + readMessage);
 				 /*else {
 					Toast.makeText(OngoingActivity.this, "przyszlo",
 							Toast.LENGTH_LONG).show();	
@@ -327,7 +310,6 @@ public class ParentActivity extends Activity {
 	};
 
 	protected void setupChat() {
-		Log.i("jest", "setupChat");
 		mChatService = new BluetoothChatService(this, mHandler);
 
 		// Initialize the buffer for outgoing messages
@@ -341,12 +323,10 @@ public class ParentActivity extends Activity {
 	}
 	
 	protected void viewAll(){
-		Log.e("wywolanie","z bazowej");
 		reports = dbHelper.listAll();			
 	}
 	
 	protected void sendPhoto (byte[] photo){
-		Log.i("jest", "poczatek send !");
 		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
 			Toast.makeText(this, "not", Toast.LENGTH_SHORT).show();
 			return;
@@ -362,22 +342,17 @@ public class ParentActivity extends Activity {
 	
 		
 	protected void sendFailure(Failure failure) {
-
-		Log.i("jest", "poczatek send failure!");
 		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
 			Toast.makeText(this, "not", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		if (failure != null) {
-			Log.i("jest", "send failure dobrze " + failure.getTitle());
 			byte[] send = null;
 			try {
 				send = Serializer.serialize(failure);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			if (send == null)
-				Log.e("jest","null przy wysylaniu");
 			Toast.makeText(this, "send ", Toast.LENGTH_SHORT).show();
 			mChatService.write(send);
 

@@ -4,13 +4,13 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import failure.Failure;
-
+import utils.Utils;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import failure.Failure;
 
 public class FailureDbFacade {
 	private SQLiteDatabase db;
@@ -66,7 +66,6 @@ public class FailureDbFacade {
         v.put("e_date", f.getEndDateInString());
         if (f.getPhotos() != null) {
         if (!f.getPhotos().isEmpty()) {
-        	Log.e("foto","sa jakies zdj");
         if (f.getPhotos().size() > 0)
         v.put("photo_1", f.getPhotoInBytes(0));
         if (f.getPhotos().size() > 1)
@@ -86,7 +85,6 @@ public class FailureDbFacade {
     }
 
     public boolean delete(long id) {
-    	Log.i("lol","usuwa");
         validate();
         return (1 == db
                 .delete(FailureDbHelper.TABLE_REPORTS, "_id=" + id, null));
@@ -106,7 +104,7 @@ public class FailureDbFacade {
                 return null;
             }
         } catch (SQLException e) {
-            Log.e("topics.database", "Error searching application database.", e);
+            Log.e(Utils.TAG, "Error searching application database.", e);
             return null;
         } finally {
             if (cur != null && !cur.isClosed()) {
@@ -124,7 +122,7 @@ public class FailureDbFacade {
                     "title='" + title + "'", null, null, null, "title", null);
             extractReportsFromCursor(result, cur);
         } catch (SQLException e) {
-            Log.e("topics.database", "Error searching application database.", e);
+            Log.e(Utils.TAG, "Error searching application database.", e);
         } finally {
             if (cur != null && !cur.isClosed()) {
                 cur.close();
@@ -143,7 +141,7 @@ public class FailureDbFacade {
             		"done = 0", null, null, null, "title", null);
             extractReportsFromCursor(result, cur);
         } catch (SQLException e) {
-            Log.e("topics.database", "Error searching application database.", e);
+            Log.e(Utils.TAG, "Error searching application database.", e);
         } finally {
             if (cur != null && !cur.isClosed()) {
                 cur.close();
@@ -162,7 +160,7 @@ public class FailureDbFacade {
             		"done = 1", null, null, null, "title", null);
             extractReportsFromCursor(result, cur);
         } catch (SQLException e) {
-            Log.e("topics.database", "Error searching application database.", e);
+            Log.e(Utils.TAG, "Error searching application database.", e);
         } finally {
             if (cur != null && !cur.isClosed()) {
                 cur.close();
@@ -181,7 +179,7 @@ public class FailureDbFacade {
             		"done = " + String.valueOf(done), null, null, null, field + " desc", null);
             extractReportsFromCursor(result, cur);
         } catch (SQLException e) {
-            Log.e("topics.database", "Error searching application database.", e);
+            Log.e(Utils.TAG, "Error searching application database.", e);
         } finally {
             if (cur != null && !cur.isClosed()) {
                 cur.close();
@@ -198,7 +196,7 @@ public class FailureDbFacade {
             cur = db.query(true, FailureDbHelper.TABLE_REPORTS, null /* all */,
                     null, null, null, null, "title", null);
         } catch (SQLException e) {
-            Log.e("topics.database", "Error searching application database.", e);
+            Log.e(Utils.TAG, "Error searching application database.", e);
             cur = null;
         }
         return cur;

@@ -1,5 +1,6 @@
 package database;
 
+import utils.Utils;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,7 +18,7 @@ public class FailureDbHelper extends SQLiteOpenHelper {
 
 	    @Override
 	    public void onCreate(SQLiteDatabase db) {
-	        Log.d("topics.database", "Creating new database...");
+	        Log.d(Utils.TAG, "Creating new database...");
 	        StringBuilder sqlBuilder = new StringBuilder();
 	        sqlBuilder.append("CREATE TABLE ").append(TABLE_REPORTS).append(" (");
 	        sqlBuilder.append("_id INTEGER PRIMARY KEY, ");
@@ -38,9 +39,9 @@ public class FailureDbHelper extends SQLiteOpenHelper {
 	        try {
 	            db.execSQL(sqlBuilder.toString());
 	        } catch (SQLException ex) {
-	            Log.e("topics.database", "Error creating application database.", ex);
+	            Log.e(Utils.TAG, "Error creating application database.", ex);
 	        }
-	        Log.d("topics.database", "... database creation finished.");
+	        Log.d(Utils.TAG, "... database creation finished.");
 	    }
 
 	    @Override

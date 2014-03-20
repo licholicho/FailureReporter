@@ -1,5 +1,6 @@
 package com.example.project;
 
+import utils.Utils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,7 +68,6 @@ public class OngoingActivity extends ParentActivity {
 		menu.add(Menu.NONE, CONTEXT_SMS, Menu.NONE, "SMS");
 		menu.add(Menu.NONE, CONTEXT_EMAIL, Menu.NONE, "E-mail");
 		menu.add(Menu.NONE, CONTEXT_EXPORT, Menu.NONE, "Export");
-		Log.i("lol", "asfs");
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class OngoingActivity extends ParentActivity {
 					&& (mChatService.getState() == BluetoothChatService.STATE_CONNECTED)) {
 				sendFailure(t);
 			} else {
-				Log.i("jest", "problem z polaczeniem");
+				Utils.log("Connection problem");
 			}
 		}
 			break;

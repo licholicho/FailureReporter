@@ -74,7 +74,6 @@ public class MenuAdapter extends BaseAdapter{
 		holder.deleteButton.setOnClickListener(new OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
-	        	Log.i("ongoing","delete!");
 	        	AlertDialog.Builder builder = new AlertDialog.Builder(context);
 	        	// Add the buttons
 	        	builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {

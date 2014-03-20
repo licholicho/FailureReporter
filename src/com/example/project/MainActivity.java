@@ -1,5 +1,6 @@
 package com.example.project;
 
+import utils.Utils;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,7 +41,6 @@ public class MainActivity extends Activity {
 		    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		    	switch(position) {
 		    	case 0:	    		
-		    			//intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		    			intent.setClass(view.getContext(), AddFailureActivity.class);
 		    			startActivity(intent);
 		    			break;
@@ -55,15 +55,9 @@ public class MainActivity extends Activity {
 		    	default:
 		    			break;
 		    	}
-		    	Log.i("topics","d "+position);
 		    }
 		}); 
 
-
-	
-
-		//startService(new Intent(this, LocationService.class));
-	 
 	}
 
 	@Override
@@ -74,7 +68,7 @@ public class MainActivity extends Activity {
 	}
 
 	 private void setupDbEnv() {
-		  Log.i("topics.database","setup!");
+		  Utils.log("setup!");
 	        if (dbOpenHelper == null) {
 	            dbOpenHelper = new FailureDbHelper(this);
 	        } 

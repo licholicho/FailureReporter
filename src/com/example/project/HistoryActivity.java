@@ -2,6 +2,8 @@ package com.example.project;
 
 import java.util.List;
 
+import utils.Utils;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -66,7 +68,7 @@ public class HistoryActivity extends ParentActivity {
 					&& (mChatService.getState() == BluetoothChatService.STATE_CONNECTED)) {
 				sendFailure(t);
 			} else {
-				Log.i("jest", "problem z polaczeniem");
+				Utils.log("Connection problem");
 			}
 		}
 			break;
@@ -93,7 +95,7 @@ public class HistoryActivity extends ParentActivity {
 			checkBluetooth();
 		}
 		if (item.getItemId() == R.id.connect) {
-			Log.i("jest", "connect");
+			Utils.log("Connected");
 			if (!BA.isEnabled()) {
 				Toast.makeText(getApplicationContext(),
 						"Please, turn Bluetooth on", Toast.LENGTH_LONG).show();
@@ -109,7 +111,7 @@ public class HistoryActivity extends ParentActivity {
 
 
 	protected void setupDbEnv() {
-		Log.i("topics.database", "setup!");
+		Utils.log("setup!");
 		if (dbOpenHelper == null) {
 			dbOpenHelper = new FailureDbHelper(this);
 		}

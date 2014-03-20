@@ -48,13 +48,10 @@ public class GeoUtils {
 					strAddress.append(fetchedAddress.getAddressLine(i)).append(
 							"\n");
 				}
-
-				Log.i("gowno","I am at: " + strAddress.toString());
 				return strAddress.toString();
 			}
 
 			else
-				Log.i("gowno","No location found..!");
 				return "";
 		}
 
@@ -98,7 +95,6 @@ public class GeoUtils {
 		double lat = ((JSONArray) jsonObject.get("results")).getJSONObject(0)
 				.getJSONObject("geometry").getJSONObject("location")
 				.getDouble("lat");
-		Log.i("gowno", "jaja");
 		return new LatLng(lat, lng);
 	}
 

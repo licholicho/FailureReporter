@@ -4,10 +4,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.util.Log;
 import android.widget.DatePicker;
 
 public class Utils {
 
+	public static String TAG = "failure_reporter";
+	
+	public static void log(String string) {
+		Log.i(TAG, string);
+	}
+	
 	public static String dateToString(Date date) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String datetime = dateFormat.format(date);
