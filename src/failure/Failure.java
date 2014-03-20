@@ -21,7 +21,7 @@ public class Failure implements Serializable {
 	private String title;
 	private String description;
 	private String beginDate;
-	private String endDate = Utils.dateToString(new Date(Long.MAX_VALUE));
+	private String endDate;
 	private boolean status;
 	private double latitude;
 	private double longitude;
@@ -36,7 +36,7 @@ public class Failure implements Serializable {
 		this.description = "";
 		this.status = false;
 		this.beginDate = "";
-		this.endDate = "";
+		this.endDate = Utils.dateToString(new Date(Long.MAX_VALUE));
 		this.photos = new ArrayList<byte[]>();
 		this.latitude = 0;
 		this.longitude = 0;
@@ -49,7 +49,7 @@ public class Failure implements Serializable {
 		this.description = description;
 		this.status = false;
 		this.beginDate = "";
-		this.endDate = "";
+		this.endDate = Utils.dateToString(new Date(Long.MAX_VALUE));
 		this.photos = new ArrayList<byte[]>();
 		this.latitude = 0;
 		this.longitude = 0;

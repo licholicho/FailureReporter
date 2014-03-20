@@ -153,12 +153,13 @@ public class EditFailureActivity extends Activity {
 			description.setText(t.getDescription());
 			done.setChecked(t.isDone());
 			beginDate.init(t.getStartYear(), t.getStartMonth(), t.getStartDay(), null);
-			endDate.init(t.getEndYear(), t.getEndMonth(), t.getEndDay(), null);
+			if (t.isDone())
+				endDate.init(t.getEndYear(), t.getEndMonth(), t.getEndDay(), null);
 			addressEt.setText(t.getNameOfPlace());
 			longitudeEt.setText(String.valueOf(t.getLongitude()));
 			latitudeEt.setText(String.valueOf(t.getLatitude()));
 			if (photos.isEmpty()) {
-			photos = t.getPhotos();
+				photos = t.getPhotos();
 			if(!photos.isEmpty()) {
 				Log.e("jest","dodaje w extras");
 				for(int i = 0; i < photos.size(); i++)
@@ -247,13 +248,15 @@ public class EditFailureActivity extends Activity {
 	}
 
 	public void updateFailure() {
-		Log.i("topics", "update");
+		
 		Failure f = dbHelper.getById(idToUpdate);
 		f.setTitle(title.getText().toString());
 		f.setDescription(description.getText().toString());
-		f.setDone(f.isDone());
+		f.setDone(done.isChecked());
 		f.setBeginDate(Utils.getDateInString(beginDate));
-		f.setEndDate(Utils.getDateInString(endDate));
+		Log.e("topics", "update "+done.isChecked()+" "+Utils.getDateInString(endDate));
+		if (done.isChecked())
+			f.setEndDate(Utils.getDateInString(endDate));
 		f.setPhotos(photos);
 		f.setLongitude(longitudeEt.getText().toString());
 		f.setLatitude(latitudeEt.getText().toString());

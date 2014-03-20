@@ -113,6 +113,7 @@ public class MenuAdapter extends BaseAdapter{
 			holder.done.setEnabled(false);
 			holder.done.setVisibility(View.INVISIBLE);
 		}
+		holder.done.setChecked(f.isDone());
 		holder.done.setOnCheckedChangeListener(new OnCheckedChangeListener()
 		{
 		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
