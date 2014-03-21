@@ -38,7 +38,7 @@ public class ParentActivity extends Activity {
 	protected BluetoothAdapter BA;
 	protected static final int REQUEST_CONNECT_DEVICE = 1;
 	protected static final int REQUEST_ENABLE_BT = 2;
-	protected BluetoothChatService mChatService = null;
+	protected BluetoothService mChatService = null;
 	protected StringBuffer mOutStringBuffer;
 	protected String mConnectedDeviceName;
 	public static final int MESSAGE_STATE_CHANGE = 1;
@@ -218,18 +218,18 @@ public class ParentActivity extends Activity {
 			switch (msg.what) {
 			case MESSAGE_STATE_CHANGE:
 				switch (msg.arg1) {
-				case BluetoothChatService.STATE_CONNECTED:
+				case BluetoothService.STATE_CONNECTED:
 					Toast.makeText(getApplicationContext(),
 							R.string.title_connected_to, Toast.LENGTH_LONG)
 							.show();
 					break;
-				case BluetoothChatService.STATE_CONNECTING:
+				case BluetoothService.STATE_CONNECTING:
 					Toast.makeText(getApplicationContext(),
 							R.string.title_connecting, Toast.LENGTH_LONG)
 							.show();
 					break;
-				case BluetoothChatService.STATE_LISTEN:
-				case BluetoothChatService.STATE_NONE:
+				case BluetoothService.STATE_LISTEN:
+				case BluetoothService.STATE_NONE:
 					Toast.makeText(getApplicationContext(),
 							R.string.title_not_connected, Toast.LENGTH_LONG)
 							.show();
@@ -282,7 +282,7 @@ public class ParentActivity extends Activity {
 	};
 
 	protected void setupChat() {
-		mChatService = new BluetoothChatService(this, mHandler);
+		mChatService = new BluetoothService(this, mHandler);
 
 		// Initialize the buffer for outgoing messages
 		mOutStringBuffer = new StringBuffer("");
@@ -299,7 +299,7 @@ public class ParentActivity extends Activity {
 	}
 	
 	protected void sendPhoto (byte[] photo){
-		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+		if (mChatService.getState() != BluetoothService.STATE_CONNECTED) {
 			return;
 		}
 	
@@ -313,10 +313,12 @@ public class ParentActivity extends Activity {
 	
 		
 	protected void sendFailure(Failure failure) {
-		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+		if (mChatService.getState() != BluetoothService.STATE_CONNECTED) {
 			return;
 		}
 		if (failure != null) {
+			if (!failure.getPhotos().isEmpty())
+				failure.setPhotosEmpty();
 			byte[] send = null;
 			try {
 				send = Serializer.serialize(failure);

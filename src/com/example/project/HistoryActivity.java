@@ -61,7 +61,7 @@ public class HistoryActivity extends ParentActivity {
 			break;
 		case CONTEXT_EXPORT: {
 			if (BA.isEnabled() && (mChatService != null)
-					&& (mChatService.getState() == BluetoothChatService.STATE_CONNECTED)) {
+					&& (mChatService.getState() == BluetoothService.STATE_CONNECTED)) {
 				sendFailure(t);
 			} else {
 				Utils.log("Connection problem");
