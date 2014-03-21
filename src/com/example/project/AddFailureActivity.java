@@ -27,7 +27,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -484,7 +483,7 @@ public class AddFailureActivity extends Activity {
 				Bundle extras = data.getExtras();
 				Bitmap picture = (Bitmap) extras.getParcelable("data");
 		        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		        picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+		        picture.compress(Bitmap.CompressFormat.JPEG, 1, stream);
 		        byte[] byteArray = stream.toByteArray();
 		        photos.add(byteArray);
 		        photosTv.setVisibility(View.VISIBLE);

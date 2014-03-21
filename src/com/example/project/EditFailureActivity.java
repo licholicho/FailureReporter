@@ -28,7 +28,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -307,8 +306,10 @@ public class EditFailureActivity extends Activity {
 		body.append(description.getText().toString()).append("\n");
 		body.append("Notification date: ").append(Utils.getDateInString(beginDate))
 				.append("\n");
+		if (done.isChecked()) {
 		body.append("Solution date: ").append(Utils.getDateInString(endDate))
 				.append("\n");
+		}
 		body.append("Status: ").append(isDone());
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("message/rfc822");
@@ -342,8 +343,10 @@ public class EditFailureActivity extends Activity {
 		body.append(description.getText().toString()).append("\n");
 		body.append("Notification date: ").append(Utils.getDateInString(beginDate))
 				.append("\n");
+		if(done.isChecked()) {
 		body.append("Solution date: ").append(Utils.getDateInString(endDate))
 				.append("\n");
+		}
 		body.append("Status: ").append(isDone());
 		Intent sendSms = new Intent(Intent.ACTION_VIEW);
 		sendSms.putExtra("sms_body", body.toString());

@@ -15,6 +15,10 @@ public class Utils {
 		Log.i(TAG, string);
 	}
 	
+	public static void loge(String string) {
+		Log.e(TAG, string);
+	}
+	
 	public static String dateToString(Date date) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String datetime = dateFormat.format(date);

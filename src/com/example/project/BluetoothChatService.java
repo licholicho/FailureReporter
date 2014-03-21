@@ -19,9 +19,9 @@ package com.example.project;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.UUID;
+
+import utils.Utils;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -411,10 +411,10 @@ public class BluetoothChatService {
                     byte[] failure = buffer;
                     // Send the obtained bytes to the UI Activity
                   //  mHandler.obtainMessage(ParentActivity.MESSAGE_READ, bytes, -1, buffer)
-                    //mHandler.obtainMessage(ParentActivity.MESSAGE_READ, bytes, -1, failure)
-                      //      .sendToTarget();
-                    Message m = mHandler.obtainMessage(ParentActivity.MESSAGE_READ, bytes, -1, failure);
-                    mHandler.sendMessage(m);
+                    mHandler.obtainMessage(ParentActivity.MESSAGE_READ, bytes, -1, failure)
+                           .sendToTarget();
+                   // Message m = mHandler.obtainMessage(ParentActivity.MESSAGE_READ, bytes, -1, failure);
+                  //  mHandler.sendMessage(m);
                     
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);

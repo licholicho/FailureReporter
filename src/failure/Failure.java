@@ -12,7 +12,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 public class Failure implements Serializable {
 
@@ -123,7 +122,6 @@ public class Failure implements Serializable {
 	}
 
 	public void setDone(int d) {
-		Log.i("lol", "done");
 		if (d == 1)
 			this.status = true;
 		else

@@ -4,34 +4,29 @@ import java.io.IOException;
 import java.util.List;
 
 import utils.Utils;
-
-import com.example.failurereporter.R;
-import com.example.failurereporter.R.layout;
-import com.example.failurereporter.R.menu;
-
-import database.FailureDbFacade;
-import database.FailureDbHelper;
-import failure.Failure;
-import failure.Serializer;
-
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.MediaStore.Images;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.MediaStore.Images;
 import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.example.failurereporter.R;
+
+import database.FailureDbFacade;
+import database.FailureDbHelper;
+import failure.Failure;
+import failure.Serializer;
 
 public class ParentActivity extends Activity {
 
@@ -138,7 +133,7 @@ public class ParentActivity extends Activity {
 
 	protected void sendEmail() {
 		StringBuilder body = new StringBuilder();
-		body.append("NEW UNSOLVED FAILURE!").append("\n");
+		body.append("INFO ABOUT UNSOLVED FAILURE!").append("\n");
 		body.append(reports.get(current).getTitle()).append("\n");
 		body.append(reports.get(current).getDescription()).append("\n");
 		body.append("Notification date: ")
@@ -170,11 +165,11 @@ public class ParentActivity extends Activity {
 		if (!BA.isEnabled()) {
 			Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(turnOn, 0);
-			Toast.makeText(getApplicationContext(), "Turned on",
+			Toast.makeText(getApplicationContext(), "Turning on...",
 					Toast.LENGTH_LONG).show();
 		} else {
 			BA.disable();
-			Toast.makeText(getApplicationContext(), "Turned off",
+			Toast.makeText(getApplicationContext(), "Turning off...",
 					Toast.LENGTH_LONG).show();
 		}
 	}
@@ -253,8 +248,6 @@ public class ParentActivity extends Activity {
 				// construct a string from the buffer
 				/*
 				 * String writeMessage = new String(writeBuf);
-				 * Toast.makeText(OngoingActivity.this, "w " + writeMessage,
-				 * Toast.LENGTH_SHORT).show();
 				 */
 				break;
 			case MESSAGE_READ:
@@ -263,47 +256,26 @@ public class ParentActivity extends Activity {
 				try {
 					t = (Failure) Serializer.deserialize(readBuf);
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
+					Utils.loge("Class not found");
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					Utils.loge("io expception");
 					e.printStackTrace();
 				}
 				// construct a string from the valid bytes in the buffer
-				String readMessage = t.getTitle();// new String(readBuf, 0,
-													// msg.arg1);
 				if (!dbHelper.findByTitle(t.getTitle()).isEmpty()) {
-					Toast.makeText(getApplicationContext(), "znaleziono "+t.getTitle(),
-							Toast.LENGTH_SHORT).show();
 					Failure found = dbHelper.findByTitle(t.getTitle()).get(0);
 					long originalId = found.getId();
 					found = t;
 					found.setId(originalId);
-					Toast.makeText(getApplicationContext(), "nowe "+found.getDescription(),
-							Toast.LENGTH_SHORT).show();
 					dbHelper.update(found);
 					viewAll();
 					setAdapter();
 				} else {
-					Toast.makeText(getApplicationContext(), "nie znaleziono "+t.isDone(),
-							Toast.LENGTH_SHORT).show();
 					dbHelper.insert(t);
 					viewAll();
 					setAdapter();
 				}
-
-				Toast.makeText(getApplicationContext(), "r " + readMessage,
-						Toast.LENGTH_SHORT).show();
-				 /*else {
-					Toast.makeText(OngoingActivity.this, "przyszlo",
-							Toast.LENGTH_LONG).show();	
-					Failure f = dbHelper.findByTitle("kupa").get(0);
-					if (counter == 1)
-						f.setPhotosEmpty();
-					f.addPhoto(readBuf);
-					dbHelper.update(f);
-					break;
-				}*/
 				break;
 			}
 		}
@@ -328,7 +300,6 @@ public class ParentActivity extends Activity {
 	
 	protected void sendPhoto (byte[] photo){
 		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
-			Toast.makeText(this, "not", Toast.LENGTH_SHORT).show();
 			return;
 		}
 	
@@ -343,7 +314,6 @@ public class ParentActivity extends Activity {
 		
 	protected void sendFailure(Failure failure) {
 		if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
-			Toast.makeText(this, "not", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		if (failure != null) {
@@ -353,7 +323,6 @@ public class ParentActivity extends Activity {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			Toast.makeText(this, "send ", Toast.LENGTH_SHORT).show();
 			mChatService.write(send);
 
 			mOutStringBuffer.setLength(0);

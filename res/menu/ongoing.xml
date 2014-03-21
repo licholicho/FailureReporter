@@ -28,7 +28,7 @@
         android:icon="@android:drawable/ic_menu_add"
         android:orderInCategory="100"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/new_task"/>
+        android:title="@string/new_report"/>
     
       <item
         android:id="@+id/menu_sort"

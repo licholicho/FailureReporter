@@ -3,7 +3,6 @@ package com.example.project;
 import utils.Utils;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,7 +35,6 @@ public class OngoingActivity extends ParentActivity {
 			checkBluetooth();
 		}
 		if (item.getItemId() == R.id.connect) {
-			Log.i("jest", "connect");
 			if (!BA.isEnabled()) {
 				Toast.makeText(getApplicationContext(),
 						"Please, turn Bluetooth on", Toast.LENGTH_LONG).show();

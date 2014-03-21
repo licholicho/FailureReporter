@@ -19,7 +19,6 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 

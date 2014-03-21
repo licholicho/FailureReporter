@@ -438,7 +438,7 @@ containing a value of this type.
         public static final int location=0x7f060025;
         public static final int ltt=0x7f060033;
         public static final int n_delete=0x7f060038;
-        public static final int new_task=0x7f060039;
+        public static final int new_report=0x7f060039;
         public static final int no=0x7f06002d;
         public static final int none_found=0x7f06004d;
         public static final int none_paired=0x7f06004c;

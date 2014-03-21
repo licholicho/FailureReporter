@@ -199,7 +199,7 @@ int string lgt 0x7f060032
 int string location 0x7f060025
 int string ltt 0x7f060033
 int string n_delete 0x7f060038
-int string new_task 0x7f060039
+int string new_report 0x7f060039
 int string no 0x7f06002d
 int string none_found 0x7f06004d
 int string none_paired 0x7f06004c
