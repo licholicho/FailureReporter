@@ -40,7 +40,7 @@ public class Utils {
 	public static String getDateInString(DatePicker dp) {
 		StringBuilder res = new StringBuilder();
 		res.append(String.valueOf(dp.getYear())).append("-");
-		res.append(String.valueOf(dp.getMonth())).append("-");
+		res.append(String.valueOf(dp.getMonth()+1)).append("-");
 		res.append(String.valueOf(dp.getDayOfMonth()));
 		return dateToString(stringToDate(res.toString()));
 	}

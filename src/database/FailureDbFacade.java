@@ -176,7 +176,7 @@ public class FailureDbFacade {
         Cursor cur = null;
         try {
             cur = db.query(true, FailureDbHelper.TABLE_REPORTS, null /* all */,
-            		"done = " + String.valueOf(done), null, null, null, field + " desc", null);
+            		"done = " + String.valueOf(done), null, null, null, field, null);
             extractReportsFromCursor(result, cur);
         } catch (SQLException e) {
             Log.e(Utils.TAG, "Error searching application database.", e);

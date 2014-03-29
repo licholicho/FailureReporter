@@ -258,7 +258,7 @@ public class AddFailureActivity extends Activity {
 		body.append(title.getText().toString()).append("\n");
 		body.append(description.getText().toString()).append("\n");
 		body.append("Date: ").append(Utils.getDateInString(beginDate));
-		Intent i = new Intent(Intent.ACTION_SEND);
+		Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);
 		i.setType("message/rfc822");
 		if(!photos.isEmpty()) {
 			for (int j = 0; j < photos.size(); j++) {
@@ -387,6 +387,7 @@ public class AddFailureActivity extends Activity {
 					});
 				} catch (JSONException e) {
 					e.printStackTrace();
+					
 				}
 				break;
 			case GeoUtils.GET_FROM_LAT_AND_LNG:

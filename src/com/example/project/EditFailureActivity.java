@@ -311,7 +311,7 @@ public class EditFailureActivity extends Activity {
 				.append("\n");
 		}
 		body.append("Status: ").append(isDone());
-		Intent i = new Intent(Intent.ACTION_SEND);
+		Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);
 		i.setType("message/rfc822");
 		if(!photos.isEmpty()) {
 			for (int j = 0; j < photos.size(); j++) {

@@ -193,7 +193,7 @@ public class HistoryActivity extends ParentActivity {
 		if (reports.get(current).done() == 1)
 			body.append("Solution date: ").append(
 					reports.get(current).getEndDateInString());
-		Intent i = new Intent(Intent.ACTION_SEND);
+		Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);
 		i.setType("message/rfc822");
 		List<byte[]> photos = reports.get(current).getPhotos();
 		if(!photos.isEmpty()) {
